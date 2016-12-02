@@ -14,7 +14,7 @@
 
 'use strict';
 
-var ExecutionEnvironment = _dereq_(40);
+var ExecutionEnvironment = _dereq_(43);
 
 /**
  * Generate a mapping of standard vendor prefixes using the defined style property and event name.
@@ -102,7 +102,7 @@ function getVendorPrefixedEventName(eventName) {
 }
 
 module.exports = getVendorPrefixedEventName;
-},{"40":40}],2:[function(_dereq_,module,exports){
+},{"43":43}],2:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -170,14 +170,49 @@ module.exports = KeyEscapeUtils;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
+ */
+
+'use strict';
+
+var ReactLink = _dereq_(20);
+var ReactStateSetters = _dereq_(26);
+
+/**
+ * A simple mixin around ReactLink.forState().
+ * See https://facebook.github.io/react/docs/two-way-binding-helpers.html
+ */
+var LinkedStateMixin = {
+  /**
+   * Create a ReactLink that's linked to part of this component's state. The
+   * ReactLink will have the current value of this.state[key] and will call
+   * setState() when a change is requested.
+   *
+   * @param {string} key state key to update.
+   * @return {ReactLink} ReactLink instance linking to the state.
+   */
+  linkState: function (key) {
+    return new ReactLink(this.state[key], ReactStateSetters.createStateKeySetter(this, key));
+  }
+};
+
+module.exports = LinkedStateMixin;
+},{"20":20,"26":26}],4:[function(_dereq_,module,exports){
+/**
+ * Copyright 2013-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
  * 
  */
 
 'use strict';
 
-var _prodInvariant = _dereq_(35);
+var _prodInvariant = _dereq_(38);
 
-var invariant = _dereq_(43);
+var invariant = _dereq_(46);
 
 /**
  * Static poolers. Several custom versions for each potential number of
@@ -285,7 +320,7 @@ var PooledClass = {
 };
 
 module.exports = PooledClass;
-},{"35":35,"43":43}],4:[function(_dereq_,module,exports){
+},{"38":38,"46":46}],5:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -298,26 +333,26 @@ module.exports = PooledClass;
 
 'use strict';
 
-var _assign = _dereq_(46);
+var _assign = _dereq_(49);
 
-var ReactChildren = _dereq_(8);
-var ReactComponent = _dereq_(10);
-var ReactPureComponent = _dereq_(22);
-var ReactClass = _dereq_(9);
-var ReactDOMFactories = _dereq_(14);
-var ReactElement = _dereq_(15);
-var ReactPropTypes = _dereq_(21);
-var ReactVersion = _dereq_(26);
+var ReactChildren = _dereq_(9);
+var ReactComponent = _dereq_(11);
+var ReactPureComponent = _dereq_(25);
+var ReactClass = _dereq_(10);
+var ReactDOMFactories = _dereq_(15);
+var ReactElement = _dereq_(16);
+var ReactPropTypes = _dereq_(23);
+var ReactVersion = _dereq_(30);
 
-var onlyChild = _dereq_(34);
-var warning = _dereq_(45);
+var onlyChild = _dereq_(37);
+var warning = _dereq_(48);
 
 var createElement = ReactElement.createElement;
 var createFactory = ReactElement.createFactory;
 var cloneElement = ReactElement.cloneElement;
 
 if ("development" !== 'production') {
-  var ReactElementValidator = _dereq_(17);
+  var ReactElementValidator = _dereq_(18);
   createElement = ReactElementValidator.createElement;
   createFactory = ReactElementValidator.createFactory;
   cloneElement = ReactElementValidator.cloneElement;
@@ -374,7 +409,7 @@ var React = {
 };
 
 module.exports = React;
-},{"10":10,"14":14,"15":15,"17":17,"21":21,"22":22,"26":26,"34":34,"45":45,"46":46,"8":8,"9":9}],5:[function(_dereq_,module,exports){
+},{"10":10,"11":11,"15":15,"16":16,"18":18,"23":23,"25":25,"30":30,"37":37,"48":48,"49":49,"9":9}],6:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -406,7 +441,7 @@ if ("development" !== 'production') {
     return ReactDOM.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactTestUtils;
   };
 }
-},{}],6:[function(_dereq_,module,exports){
+},{}],7:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -419,7 +454,7 @@ if ("development" !== 'production') {
 
 'use strict';
 
-var _assign = _dereq_(46);
+var _assign = _dereq_(49);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -427,10 +462,10 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var React = _dereq_(4);
+var React = _dereq_(5);
 
-var ReactTransitionGroup = _dereq_(25);
-var ReactCSSTransitionGroupChild = _dereq_(7);
+var ReactTransitionGroup = _dereq_(29);
+var ReactCSSTransitionGroupChild = _dereq_(8);
 
 function createTransitionTimeoutPropValidator(transitionType) {
   var timeoutPropName = 'transition' + transitionType + 'Timeout';
@@ -511,7 +546,7 @@ ReactCSSTransitionGroup.defaultProps = {
 
 
 module.exports = ReactCSSTransitionGroup;
-},{"25":25,"4":4,"46":46,"7":7}],7:[function(_dereq_,module,exports){
+},{"29":29,"49":49,"5":5,"8":8}],8:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -524,13 +559,13 @@ module.exports = ReactCSSTransitionGroup;
 
 'use strict';
 
-var React = _dereq_(4);
-var ReactAddonsDOMDependencies = _dereq_(5);
+var React = _dereq_(5);
+var ReactAddonsDOMDependencies = _dereq_(6);
 
-var CSSCore = _dereq_(39);
-var ReactTransitionEvents = _dereq_(24);
+var CSSCore = _dereq_(42);
+var ReactTransitionEvents = _dereq_(28);
 
-var onlyChild = _dereq_(34);
+var onlyChild = _dereq_(37);
 
 var TICK = 17;
 
@@ -678,7 +713,7 @@ var ReactCSSTransitionGroupChild = React.createClass({
 });
 
 module.exports = ReactCSSTransitionGroupChild;
-},{"24":24,"34":34,"39":39,"4":4,"5":5}],8:[function(_dereq_,module,exports){
+},{"28":28,"37":37,"42":42,"5":5,"6":6}],9:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -691,11 +726,11 @@ module.exports = ReactCSSTransitionGroupChild;
 
 'use strict';
 
-var PooledClass = _dereq_(3);
-var ReactElement = _dereq_(15);
+var PooledClass = _dereq_(4);
+var ReactElement = _dereq_(16);
 
-var emptyFunction = _dereq_(41);
-var traverseAllChildren = _dereq_(37);
+var emptyFunction = _dereq_(44);
+var traverseAllChildren = _dereq_(40);
 
 var twoArgumentPooler = PooledClass.twoArgumentPooler;
 var fourArgumentPooler = PooledClass.fourArgumentPooler;
@@ -735,7 +770,7 @@ function forEachSingleChild(bookKeeping, child, name) {
 /**
  * Iterates through children that are typically specified as `props.children`.
  *
- * See https://facebook.github.io/react/docs/react-api.html#react.children.foreach
+ * See https://facebook.github.io/react/docs/top-level-api.html#react.children.foreach
  *
  * The provided forEachFunc(child, index) will be called for each
  * leaf child.
@@ -812,7 +847,7 @@ function mapIntoWithKeyPrefixInternal(children, array, prefix, func, context) {
 /**
  * Maps children that are typically specified as `props.children`.
  *
- * See https://facebook.github.io/react/docs/react-api.html#react.children.map
+ * See https://facebook.github.io/react/docs/top-level-api.html#react.children.map
  *
  * The provided mapFunction(child, key, index) will be called for each
  * leaf child.
@@ -839,7 +874,7 @@ function forEachSingleChildDummy(traverseContext, child, name) {
  * Count the number of children that are typically specified as
  * `props.children`.
  *
- * See https://facebook.github.io/react/docs/react-api.html#react.children.count
+ * See https://facebook.github.io/react/docs/top-level-api.html#react.children.count
  *
  * @param {?*} children Children tree container.
  * @return {number} The number of children.
@@ -852,7 +887,7 @@ function countChildren(children, context) {
  * Flatten a children object (typically specified as `props.children`) and
  * return an array with appropriately re-keyed children.
  *
- * See https://facebook.github.io/react/docs/react-api.html#react.children.toarray
+ * See https://facebook.github.io/react/docs/top-level-api.html#react.children.toarray
  */
 function toArray(children) {
   var result = [];
@@ -869,7 +904,7 @@ var ReactChildren = {
 };
 
 module.exports = ReactChildren;
-},{"15":15,"3":3,"37":37,"41":41}],9:[function(_dereq_,module,exports){
+},{"16":16,"4":4,"40":40,"44":44}],10:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -882,17 +917,17 @@ module.exports = ReactChildren;
 
 'use strict';
 
-var _prodInvariant = _dereq_(35),
-    _assign = _dereq_(46);
+var _prodInvariant = _dereq_(38),
+    _assign = _dereq_(49);
 
-var ReactComponent = _dereq_(10);
-var ReactElement = _dereq_(15);
-var ReactPropTypeLocationNames = _dereq_(20);
-var ReactNoopUpdateQueue = _dereq_(19);
+var ReactComponent = _dereq_(11);
+var ReactElement = _dereq_(16);
+var ReactPropTypeLocationNames = _dereq_(22);
+var ReactNoopUpdateQueue = _dereq_(21);
 
-var emptyObject = _dereq_(42);
-var invariant = _dereq_(43);
-var warning = _dereq_(45);
+var emptyObject = _dereq_(45);
+var invariant = _dereq_(46);
+var warning = _dereq_(48);
 
 var MIXINS_KEY = 'mixins';
 
@@ -906,6 +941,8 @@ function identity(fn) {
  * Policies that describe methods in `ReactClassInterface`.
  */
 
+
+var injectedMixins = [];
 
 /**
  * Composite components are higher-level components that compose other composite
@@ -1486,7 +1523,7 @@ var ReactClass = {
 
   /**
    * Creates a composite component class given a class specification.
-   * See https://facebook.github.io/react/docs/react-api.html#createclass
+   * See https://facebook.github.io/react/docs/top-level-api.html#react.createclass
    *
    * @param {object} spec Class specification (which must define `render`).
    * @return {function} Component constructor function.
@@ -1536,6 +1573,8 @@ var ReactClass = {
     Constructor.prototype.constructor = Constructor;
     Constructor.prototype.__reactAutoBindPairs = [];
 
+    injectedMixins.forEach(mixSpecIntoComponent.bind(null, Constructor));
+
     mixSpecIntoComponent(Constructor, spec);
 
     // Initialize the defaultProps property after all mixins have been merged.
@@ -1571,12 +1610,18 @@ var ReactClass = {
     }
 
     return Constructor;
+  },
+
+  injection: {
+    injectMixin: function (mixin) {
+      injectedMixins.push(mixin);
+    }
   }
 
 };
 
 module.exports = ReactClass;
-},{"10":10,"15":15,"19":19,"20":20,"35":35,"42":42,"43":43,"45":45,"46":46}],10:[function(_dereq_,module,exports){
+},{"11":11,"16":16,"21":21,"22":22,"38":38,"45":45,"46":46,"48":48,"49":49}],11:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -1589,14 +1634,14 @@ module.exports = ReactClass;
 
 'use strict';
 
-var _prodInvariant = _dereq_(35);
+var _prodInvariant = _dereq_(38);
 
-var ReactNoopUpdateQueue = _dereq_(19);
+var ReactNoopUpdateQueue = _dereq_(21);
 
-var canDefineProperty = _dereq_(29);
-var emptyObject = _dereq_(42);
-var invariant = _dereq_(43);
-var warning = _dereq_(45);
+var canDefineProperty = _dereq_(33);
+var emptyObject = _dereq_(45);
+var invariant = _dereq_(46);
+var warning = _dereq_(48);
 
 /**
  * Base class helpers for the updating state of a component.
@@ -1694,7 +1739,7 @@ if ("development" !== 'production') {
 }
 
 module.exports = ReactComponent;
-},{"19":19,"29":29,"35":35,"42":42,"43":43,"45":45}],11:[function(_dereq_,module,exports){
+},{"21":21,"33":33,"38":38,"45":45,"46":46,"48":48}],12:[function(_dereq_,module,exports){
 /**
  * Copyright 2016-present, Facebook, Inc.
  * All rights reserved.
@@ -1708,13 +1753,12 @@ module.exports = ReactComponent;
 
 'use strict';
 
-var _prodInvariant = _dereq_(35);
+var _prodInvariant = _dereq_(38);
 
-var ReactCurrentOwner = _dereq_(13);
+var ReactCurrentOwner = _dereq_(14);
 
-var getComponentName = _dereq_(32);
-var invariant = _dereq_(43);
-var warning = _dereq_(45);
+var invariant = _dereq_(46);
+var warning = _dereq_(48);
 
 function isNative(fn) {
   // Based on isNative() from Lodash
@@ -1959,14 +2003,13 @@ var ReactComponentTreeHook = {
     if (topElement) {
       var name = getDisplayName(topElement);
       var owner = topElement._owner;
-      info += describeComponentFrame(name, topElement._source, owner && getComponentName(owner));
+      info += describeComponentFrame(name, topElement._source, owner && owner.getName());
     }
 
     var currentOwner = ReactCurrentOwner.current;
-    if (currentOwner && typeof currentOwner._debugID === 'number') {
-      var id = currentOwner && currentOwner._debugID;
-      info += ReactComponentTreeHook.getStackAddendumByID(id);
-    }
+    var id = currentOwner && currentOwner._debugID;
+
+    info += ReactComponentTreeHook.getStackAddendumByID(id);
     return info;
   },
   getStackAddendumByID: function (id) {
@@ -2030,7 +2073,7 @@ var ReactComponentTreeHook = {
 };
 
 module.exports = ReactComponentTreeHook;
-},{"13":13,"32":32,"35":35,"43":43,"45":45}],12:[function(_dereq_,module,exports){
+},{"14":14,"38":38,"46":46,"48":48}],13:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -2043,7 +2086,7 @@ module.exports = ReactComponentTreeHook;
 
 'use strict';
 
-var shallowCompare = _dereq_(36);
+var shallowCompare = _dereq_(39);
 
 /**
  * If your React component's render function is "pure", e.g. it will render the
@@ -2078,7 +2121,7 @@ var ReactComponentWithPureRenderMixin = {
 };
 
 module.exports = ReactComponentWithPureRenderMixin;
-},{"36":36}],13:[function(_dereq_,module,exports){
+},{"39":39}],14:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -2109,7 +2152,7 @@ var ReactCurrentOwner = {
 };
 
 module.exports = ReactCurrentOwner;
-},{}],14:[function(_dereq_,module,exports){
+},{}],15:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -2122,7 +2165,7 @@ module.exports = ReactCurrentOwner;
 
 'use strict';
 
-var ReactElement = _dereq_(15);
+var ReactElement = _dereq_(16);
 
 /**
  * Create a factory that creates HTML tag elements.
@@ -2131,7 +2174,7 @@ var ReactElement = _dereq_(15);
  */
 var createDOMFactory = ReactElement.createFactory;
 if ("development" !== 'production') {
-  var ReactElementValidator = _dereq_(17);
+  var ReactElementValidator = _dereq_(18);
   createDOMFactory = ReactElementValidator.createFactory;
 }
 
@@ -2279,7 +2322,7 @@ var ReactDOMFactories = {
 };
 
 module.exports = ReactDOMFactories;
-},{"15":15,"17":17}],15:[function(_dereq_,module,exports){
+},{"16":16,"18":18}],16:[function(_dereq_,module,exports){
 /**
  * Copyright 2014-present, Facebook, Inc.
  * All rights reserved.
@@ -2292,15 +2335,15 @@ module.exports = ReactDOMFactories;
 
 'use strict';
 
-var _assign = _dereq_(46);
+var _assign = _dereq_(49);
 
-var ReactCurrentOwner = _dereq_(13);
+var ReactCurrentOwner = _dereq_(14);
 
-var warning = _dereq_(45);
-var canDefineProperty = _dereq_(29);
+var warning = _dereq_(48);
+var canDefineProperty = _dereq_(33);
 var hasOwnProperty = Object.prototype.hasOwnProperty;
 
-var REACT_ELEMENT_TYPE = _dereq_(16);
+var REACT_ELEMENT_TYPE = _dereq_(17);
 
 var RESERVED_PROPS = {
   key: true,
@@ -2447,7 +2490,7 @@ var ReactElement = function (type, key, ref, self, source, owner, props) {
 
 /**
  * Create and return a new ReactElement of the given type.
- * See https://facebook.github.io/react/docs/react-api.html#createelement
+ * See https://facebook.github.io/react/docs/top-level-api.html#react.createelement
  */
 ReactElement.createElement = function (type, config, children) {
   var propName;
@@ -2523,7 +2566,7 @@ ReactElement.createElement = function (type, config, children) {
 
 /**
  * Return a function that produces ReactElements of a given type.
- * See https://facebook.github.io/react/docs/react-api.html#createfactory
+ * See https://facebook.github.io/react/docs/top-level-api.html#react.createfactory
  */
 ReactElement.createFactory = function (type) {
   var factory = ReactElement.createElement.bind(null, type);
@@ -2544,7 +2587,7 @@ ReactElement.cloneAndReplaceKey = function (oldElement, newKey) {
 
 /**
  * Clone and return a new ReactElement using element as the starting point.
- * See https://facebook.github.io/react/docs/react-api.html#cloneelement
+ * See https://facebook.github.io/react/docs/top-level-api.html#react.cloneelement
  */
 ReactElement.cloneElement = function (element, config, children) {
   var propName;
@@ -2610,7 +2653,7 @@ ReactElement.cloneElement = function (element, config, children) {
 
 /**
  * Verifies the object is a ReactElement.
- * See https://facebook.github.io/react/docs/react-api.html#isvalidelement
+ * See https://facebook.github.io/react/docs/top-level-api.html#react.isvalidelement
  * @param {?object} object
  * @return {boolean} True if `object` is a valid component.
  * @final
@@ -2620,7 +2663,7 @@ ReactElement.isValidElement = function (object) {
 };
 
 module.exports = ReactElement;
-},{"13":13,"16":16,"29":29,"45":45,"46":46}],16:[function(_dereq_,module,exports){
+},{"14":14,"17":17,"33":33,"48":48,"49":49}],17:[function(_dereq_,module,exports){
 /**
  * Copyright 2014-present, Facebook, Inc.
  * All rights reserved.
@@ -2640,7 +2683,7 @@ module.exports = ReactElement;
 var REACT_ELEMENT_TYPE = typeof Symbol === 'function' && Symbol['for'] && Symbol['for']('react.element') || 0xeac7;
 
 module.exports = REACT_ELEMENT_TYPE;
-},{}],17:[function(_dereq_,module,exports){
+},{}],18:[function(_dereq_,module,exports){
 /**
  * Copyright 2014-present, Facebook, Inc.
  * All rights reserved.
@@ -2660,20 +2703,19 @@ module.exports = REACT_ELEMENT_TYPE;
 
 'use strict';
 
-var ReactCurrentOwner = _dereq_(13);
-var ReactComponentTreeHook = _dereq_(11);
-var ReactElement = _dereq_(15);
+var ReactCurrentOwner = _dereq_(14);
+var ReactComponentTreeHook = _dereq_(12);
+var ReactElement = _dereq_(16);
 
-var checkReactTypeSpec = _dereq_(30);
+var checkReactTypeSpec = _dereq_(34);
 
-var canDefineProperty = _dereq_(29);
-var getComponentName = _dereq_(32);
-var getIteratorFn = _dereq_(33);
-var warning = _dereq_(45);
+var canDefineProperty = _dereq_(33);
+var getIteratorFn = _dereq_(36);
+var warning = _dereq_(48);
 
 function getDeclarationErrorAddendum() {
   if (ReactCurrentOwner.current) {
-    var name = getComponentName(ReactCurrentOwner.current);
+    var name = ReactCurrentOwner.current.getName();
     if (name) {
       return ' Check the render method of `' + name + '`.';
     }
@@ -2731,7 +2773,7 @@ function validateExplicitKey(element, parentType) {
   var childOwner = '';
   if (element && element._owner && element._owner !== ReactCurrentOwner.current) {
     // Give the component that originally created this child.
-    childOwner = ' It was passed a child from ' + getComponentName(element._owner) + '.';
+    childOwner = ' It was passed a child from ' + element._owner.getName() + '.';
   }
 
   "development" !== 'production' ? warning(false, 'Each child in an array or iterator should have a unique "key" prop.' + '%s%s See https://fb.me/react-warning-keys for more information.%s', currentComponentErrorInfo, childOwner, ReactComponentTreeHook.getCurrentStackAddendum(element)) : void 0;
@@ -2802,7 +2844,7 @@ function validatePropTypes(element) {
 var ReactElementValidator = {
 
   createElement: function (type, props, children) {
-    var validType = typeof type === 'string' || typeof type === 'function' || type !== null && typeof type === 'object' && typeof type.tag === 'number';
+    var validType = typeof type === 'string' || typeof type === 'function';
     // We warn in this case but don't throw. We expect the element creation to
     // succeed and there will likely be errors in render.
     if (!validType) {
@@ -2868,7 +2910,7 @@ var ReactElementValidator = {
 };
 
 module.exports = ReactElementValidator;
-},{"11":11,"13":13,"15":15,"29":29,"30":30,"32":32,"33":33,"45":45}],18:[function(_dereq_,module,exports){
+},{"12":12,"14":14,"16":16,"33":33,"34":34,"36":36,"48":48}],19:[function(_dereq_,module,exports){
 /**
  * Copyright 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -2881,14 +2923,14 @@ module.exports = ReactElementValidator;
 
 'use strict';
 
-var _prodInvariant = _dereq_(35);
+var _prodInvariant = _dereq_(38);
 
-var ReactChildren = _dereq_(8);
-var ReactElement = _dereq_(15);
+var ReactChildren = _dereq_(9);
+var ReactElement = _dereq_(16);
 
-var emptyFunction = _dereq_(41);
-var invariant = _dereq_(43);
-var warning = _dereq_(45);
+var emptyFunction = _dereq_(44);
+var invariant = _dereq_(46);
+var warning = _dereq_(48);
 
 /**
  * We used to allow keyed objects to serve as a collection of ReactElements,
@@ -2937,7 +2979,78 @@ var ReactFragment = {
 };
 
 module.exports = ReactFragment;
-},{"15":15,"35":35,"41":41,"43":43,"45":45,"8":8}],19:[function(_dereq_,module,exports){
+},{"16":16,"38":38,"44":44,"46":46,"48":48,"9":9}],20:[function(_dereq_,module,exports){
+/**
+ * Copyright 2013-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ */
+
+'use strict';
+
+/**
+ * ReactLink encapsulates a common pattern in which a component wants to modify
+ * a prop received from its parent. ReactLink allows the parent to pass down a
+ * value coupled with a callback that, when invoked, expresses an intent to
+ * modify that value. For example:
+ *
+ * React.createClass({
+ *   getInitialState: function() {
+ *     return {value: ''};
+ *   },
+ *   render: function() {
+ *     var valueLink = new ReactLink(this.state.value, this._handleValueChange);
+ *     return <input valueLink={valueLink} />;
+ *   },
+ *   _handleValueChange: function(newValue) {
+ *     this.setState({value: newValue});
+ *   }
+ * });
+ *
+ * We have provided some sugary mixins to make the creation and
+ * consumption of ReactLink easier; see LinkedValueUtils and LinkedStateMixin.
+ */
+
+var React = _dereq_(5);
+
+/**
+ * Deprecated: An an easy way to express two-way binding with React. 
+ * See https://facebook.github.io/react/docs/two-way-binding-helpers.html
+ *
+ * @param {*} value current value of the link
+ * @param {function} requestChange callback to request a change
+ */
+function ReactLink(value, requestChange) {
+  this.value = value;
+  this.requestChange = requestChange;
+}
+
+/**
+ * Creates a PropType that enforces the ReactLink API and optionally checks the
+ * type of the value being passed inside the link. Example:
+ *
+ * MyComponent.propTypes = {
+ *   tabIndexLink: ReactLink.PropTypes.link(React.PropTypes.number)
+ * }
+ */
+function createLinkTypeChecker(linkType) {
+  var shapes = {
+    value: linkType === undefined ? React.PropTypes.any.isRequired : linkType.isRequired,
+    requestChange: React.PropTypes.func.isRequired
+  };
+  return React.PropTypes.shape(shapes);
+}
+
+ReactLink.PropTypes = {
+  link: createLinkTypeChecker
+};
+
+module.exports = ReactLink;
+},{"5":5}],21:[function(_dereq_,module,exports){
 /**
  * Copyright 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -2950,7 +3063,7 @@ module.exports = ReactFragment;
 
 'use strict';
 
-var warning = _dereq_(45);
+var warning = _dereq_(48);
 
 function warnNoop(publicInstance, callerName) {
   if ("development" !== 'production') {
@@ -3033,7 +3146,7 @@ var ReactNoopUpdateQueue = {
 };
 
 module.exports = ReactNoopUpdateQueue;
-},{"45":45}],20:[function(_dereq_,module,exports){
+},{"48":48}],22:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -3058,7 +3171,7 @@ if ("development" !== 'production') {
 }
 
 module.exports = ReactPropTypeLocationNames;
-},{}],21:[function(_dereq_,module,exports){
+},{}],23:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -3071,15 +3184,13 @@ module.exports = ReactPropTypeLocationNames;
 
 'use strict';
 
-var _prodInvariant = _dereq_(35);
+var ReactElement = _dereq_(16);
+var ReactPropTypeLocationNames = _dereq_(22);
+var ReactPropTypesSecret = _dereq_(24);
 
-var ReactElement = _dereq_(15);
-var ReactPropTypeLocationNames = _dereq_(20);
-
-var emptyFunction = _dereq_(41);
-var getIteratorFn = _dereq_(33);
-var invariant = _dereq_(43);
-var warning = _dereq_(45);
+var emptyFunction = _dereq_(44);
+var getIteratorFn = _dereq_(36);
+var warning = _dereq_(48);
 
 /**
  * Collection of methods that allow declaration and validation of props that are
@@ -3130,58 +3241,25 @@ var warning = _dereq_(45);
 
 var ANONYMOUS = '<<anonymous>>';
 
-var ReactPropTypes;
+var ReactPropTypes = {
+  array: createPrimitiveTypeChecker('array'),
+  bool: createPrimitiveTypeChecker('boolean'),
+  func: createPrimitiveTypeChecker('function'),
+  number: createPrimitiveTypeChecker('number'),
+  object: createPrimitiveTypeChecker('object'),
+  string: createPrimitiveTypeChecker('string'),
+  symbol: createPrimitiveTypeChecker('symbol'),
 
-if ("development" !== 'production') {
-  // Keep in sync with production version below
-  ReactPropTypes = {
-    array: createPrimitiveTypeChecker('array'),
-    bool: createPrimitiveTypeChecker('boolean'),
-    func: createPrimitiveTypeChecker('function'),
-    number: createPrimitiveTypeChecker('number'),
-    object: createPrimitiveTypeChecker('object'),
-    string: createPrimitiveTypeChecker('string'),
-    symbol: createPrimitiveTypeChecker('symbol'),
-
-    any: createAnyTypeChecker(),
-    arrayOf: createArrayOfTypeChecker,
-    element: createElementTypeChecker(),
-    instanceOf: createInstanceTypeChecker,
-    node: createNodeChecker(),
-    objectOf: createObjectOfTypeChecker,
-    oneOf: createEnumTypeChecker,
-    oneOfType: createUnionTypeChecker,
-    shape: createShapeTypeChecker
-  };
-} else {
-  var productionTypeChecker = function () {
-    !false ? "development" !== 'production' ? invariant(false, 'React.PropTypes type checking code is stripped in production.') : _prodInvariant('145') : void 0;
-  };
-  productionTypeChecker.isRequired = productionTypeChecker;
-  var getProductionTypeChecker = function () {
-    return productionTypeChecker;
-  };
-  // Keep in sync with development version above
-  ReactPropTypes = {
-    array: productionTypeChecker,
-    bool: productionTypeChecker,
-    func: productionTypeChecker,
-    number: productionTypeChecker,
-    object: productionTypeChecker,
-    string: productionTypeChecker,
-    symbol: productionTypeChecker,
-
-    any: productionTypeChecker,
-    arrayOf: getProductionTypeChecker,
-    element: productionTypeChecker,
-    instanceOf: getProductionTypeChecker,
-    node: productionTypeChecker,
-    objectOf: getProductionTypeChecker,
-    oneOf: getProductionTypeChecker,
-    oneOfType: getProductionTypeChecker,
-    shape: getProductionTypeChecker
-  };
-}
+  any: createAnyTypeChecker(),
+  arrayOf: createArrayOfTypeChecker,
+  element: createElementTypeChecker(),
+  instanceOf: createInstanceTypeChecker,
+  node: createNodeChecker(),
+  objectOf: createObjectOfTypeChecker,
+  oneOf: createEnumTypeChecker,
+  oneOfType: createUnionTypeChecker,
+  shape: createShapeTypeChecker
+};
 
 /**
  * inlined Object.is polyfill to avoid requiring consumers ship their own
@@ -3216,9 +3294,21 @@ function PropTypeError(message) {
 PropTypeError.prototype = Error.prototype;
 
 function createChainableTypeChecker(validate) {
-  function checkType(isRequired, props, propName, componentName, location, propFullName) {
+  if ("development" !== 'production') {
+    var manualPropTypeCallCache = {};
+  }
+  function checkType(isRequired, props, propName, componentName, location, propFullName, secret) {
     componentName = componentName || ANONYMOUS;
     propFullName = propFullName || propName;
+    if ("development" !== 'production') {
+      if (secret !== ReactPropTypesSecret && typeof console !== 'undefined') {
+        var cacheKey = componentName + ':' + propName;
+        if (!manualPropTypeCallCache[cacheKey]) {
+          "development" !== 'production' ? warning(false, 'You are manually calling a React.PropTypes validation ' + 'function for the `%s` prop on `%s`. This is deprecated ' + 'and will not work in production with the next major version. ' + 'You may be seeing this warning due to a third-party PropTypes ' + 'library. See https://fb.me/react-warning-dont-call-proptypes ' + 'for details.', propFullName, componentName) : void 0;
+          manualPropTypeCallCache[cacheKey] = true;
+        }
+      }
+    }
     if (props[propName] == null) {
       var locationName = ReactPropTypeLocationNames[location];
       if (isRequired) {
@@ -3240,7 +3330,7 @@ function createChainableTypeChecker(validate) {
 }
 
 function createPrimitiveTypeChecker(expectedType) {
-  function validate(props, propName, componentName, location, propFullName) {
+  function validate(props, propName, componentName, location, propFullName, secret) {
     var propValue = props[propName];
     var propType = getPropType(propValue);
     if (propType !== expectedType) {
@@ -3273,7 +3363,7 @@ function createArrayOfTypeChecker(typeChecker) {
       return new PropTypeError('Invalid ' + locationName + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an array.'));
     }
     for (var i = 0; i < propValue.length; i++) {
-      var error = typeChecker(propValue, i, componentName, location, propFullName + '[' + i + ']');
+      var error = typeChecker(propValue, i, componentName, location, propFullName + '[' + i + ']', ReactPropTypesSecret);
       if (error instanceof Error) {
         return error;
       }
@@ -3343,7 +3433,7 @@ function createObjectOfTypeChecker(typeChecker) {
     }
     for (var key in propValue) {
       if (propValue.hasOwnProperty(key)) {
-        var error = typeChecker(propValue, key, componentName, location, propFullName + '.' + key);
+        var error = typeChecker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
         if (error instanceof Error) {
           return error;
         }
@@ -3363,7 +3453,7 @@ function createUnionTypeChecker(arrayOfTypeCheckers) {
   function validate(props, propName, componentName, location, propFullName) {
     for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
       var checker = arrayOfTypeCheckers[i];
-      if (checker(props, propName, componentName, location, propFullName) == null) {
+      if (checker(props, propName, componentName, location, propFullName, ReactPropTypesSecret) == null) {
         return null;
       }
     }
@@ -3398,7 +3488,7 @@ function createShapeTypeChecker(shapeTypes) {
       if (!checker) {
         continue;
       }
-      var error = checker(propValue, key, componentName, location, propFullName + '.' + key);
+      var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
       if (error) {
         return error;
       }
@@ -3515,7 +3605,24 @@ function getClassName(propValue) {
 }
 
 module.exports = ReactPropTypes;
-},{"15":15,"20":20,"33":33,"35":35,"41":41,"43":43,"45":45}],22:[function(_dereq_,module,exports){
+},{"16":16,"22":22,"24":24,"36":36,"44":44,"48":48}],24:[function(_dereq_,module,exports){
+/**
+ * Copyright 2013-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * 
+ */
+
+'use strict';
+
+var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
+
+module.exports = ReactPropTypesSecret;
+},{}],25:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -3528,12 +3635,12 @@ module.exports = ReactPropTypes;
 
 'use strict';
 
-var _assign = _dereq_(46);
+var _assign = _dereq_(49);
 
-var ReactComponent = _dereq_(10);
-var ReactNoopUpdateQueue = _dereq_(19);
+var ReactComponent = _dereq_(11);
+var ReactNoopUpdateQueue = _dereq_(21);
 
-var emptyObject = _dereq_(42);
+var emptyObject = _dereq_(45);
 
 /**
  * Base class helpers for the updating state of a component.
@@ -3557,7 +3664,7 @@ _assign(ReactPureComponent.prototype, ReactComponent.prototype);
 ReactPureComponent.prototype.isPureReactComponent = true;
 
 module.exports = ReactPureComponent;
-},{"10":10,"19":19,"42":42,"46":46}],23:[function(_dereq_,module,exports){
+},{"11":11,"21":21,"45":45,"49":49}],26:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -3570,7 +3677,111 @@ module.exports = ReactPureComponent;
 
 'use strict';
 
-var flattenChildren = _dereq_(31);
+var ReactStateSetters = {
+  /**
+   * Returns a function that calls the provided function, and uses the result
+   * of that to set the component's state.
+   *
+   * @param {ReactCompositeComponent} component
+   * @param {function} funcReturningState Returned callback uses this to
+   *                                      determine how to update state.
+   * @return {function} callback that when invoked uses funcReturningState to
+   *                    determined the object literal to setState.
+   */
+  createStateSetter: function (component, funcReturningState) {
+    return function (a, b, c, d, e, f) {
+      var partialState = funcReturningState.call(component, a, b, c, d, e, f);
+      if (partialState) {
+        component.setState(partialState);
+      }
+    };
+  },
+
+  /**
+   * Returns a single-argument callback that can be used to update a single
+   * key in the component's state.
+   *
+   * Note: this is memoized function, which makes it inexpensive to call.
+   *
+   * @param {ReactCompositeComponent} component
+   * @param {string} key The key in the state that you should update.
+   * @return {function} callback of 1 argument which calls setState() with
+   *                    the provided keyName and callback argument.
+   */
+  createStateKeySetter: function (component, key) {
+    // Memoize the setters.
+    var cache = component.__keySetters || (component.__keySetters = {});
+    return cache[key] || (cache[key] = createStateKeySetter(component, key));
+  }
+};
+
+function createStateKeySetter(component, key) {
+  // Partial state is allocated outside of the function closure so it can be
+  // reused with every call, avoiding memory allocation when this function
+  // is called.
+  var partialState = {};
+  return function stateKeySetter(value) {
+    partialState[key] = value;
+    component.setState(partialState);
+  };
+}
+
+ReactStateSetters.Mixin = {
+  /**
+   * Returns a function that calls the provided function, and uses the result
+   * of that to set the component's state.
+   *
+   * For example, these statements are equivalent:
+   *
+   *   this.setState({x: 1});
+   *   this.createStateSetter(function(xValue) {
+   *     return {x: xValue};
+   *   })(1);
+   *
+   * @param {function} funcReturningState Returned callback uses this to
+   *                                      determine how to update state.
+   * @return {function} callback that when invoked uses funcReturningState to
+   *                    determined the object literal to setState.
+   */
+  createStateSetter: function (funcReturningState) {
+    return ReactStateSetters.createStateSetter(this, funcReturningState);
+  },
+
+  /**
+   * Returns a single-argument callback that can be used to update a single
+   * key in the component's state.
+   *
+   * For example, these statements are equivalent:
+   *
+   *   this.setState({x: 1});
+   *   this.createStateKeySetter('x')(1);
+   *
+   * Note: this is memoized function, which makes it inexpensive to call.
+   *
+   * @param {string} key The key in the state that you should update.
+   * @return {function} callback of 1 argument which calls setState() with
+   *                    the provided keyName and callback argument.
+   */
+  createStateKeySetter: function (key) {
+    return ReactStateSetters.createStateKeySetter(this, key);
+  }
+};
+
+module.exports = ReactStateSetters;
+},{}],27:[function(_dereq_,module,exports){
+/**
+ * Copyright 2013-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ */
+
+'use strict';
+
+var flattenChildren = _dereq_(35);
 
 var ReactTransitionChildMapping = {
   /**
@@ -3660,7 +3871,7 @@ var ReactTransitionChildMapping = {
 };
 
 module.exports = ReactTransitionChildMapping;
-},{"31":31}],24:[function(_dereq_,module,exports){
+},{"35":35}],28:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -3673,7 +3884,7 @@ module.exports = ReactTransitionChildMapping;
 
 'use strict';
 
-var ExecutionEnvironment = _dereq_(40);
+var ExecutionEnvironment = _dereq_(43);
 
 var getVendorPrefixedEventName = _dereq_(1);
 
@@ -3733,7 +3944,7 @@ var ReactTransitionEvents = {
 };
 
 module.exports = ReactTransitionEvents;
-},{"1":1,"40":40}],25:[function(_dereq_,module,exports){
+},{"1":1,"43":43}],29:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -3746,7 +3957,7 @@ module.exports = ReactTransitionEvents;
 
 'use strict';
 
-var _assign = _dereq_(46);
+var _assign = _dereq_(49);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3754,11 +3965,11 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var React = _dereq_(4);
-var ReactAddonsDOMDependencies = _dereq_(5);
-var ReactTransitionChildMapping = _dereq_(23);
+var React = _dereq_(5);
+var ReactAddonsDOMDependencies = _dereq_(6);
+var ReactTransitionChildMapping = _dereq_(27);
 
-var emptyFunction = _dereq_(41);
+var emptyFunction = _dereq_(44);
 
 /**
  * A basis for animations. When children are declaratively added or removed,
@@ -3983,7 +4194,7 @@ ReactTransitionGroup.defaultProps = {
 
 
 module.exports = ReactTransitionGroup;
-},{"23":23,"4":4,"41":41,"46":46,"5":5}],26:[function(_dereq_,module,exports){
+},{"27":27,"44":44,"49":49,"5":5,"6":6}],30:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -3997,7 +4208,7 @@ module.exports = ReactTransitionGroup;
 'use strict';
 
 module.exports = '15.4.1';
-},{}],27:[function(_dereq_,module,exports){
+},{}],31:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -4010,18 +4221,20 @@ module.exports = '15.4.1';
 
 'use strict';
 
-var React = _dereq_(4);
-var ReactAddonsDOMDependencies = _dereq_(5);
-var ReactComponentWithPureRenderMixin = _dereq_(12);
-var ReactCSSTransitionGroup = _dereq_(6);
-var ReactFragment = _dereq_(18);
-var ReactTransitionGroup = _dereq_(25);
+var LinkedStateMixin = _dereq_(3);
+var React = _dereq_(5);
+var ReactAddonsDOMDependencies = _dereq_(6);
+var ReactComponentWithPureRenderMixin = _dereq_(13);
+var ReactCSSTransitionGroup = _dereq_(7);
+var ReactFragment = _dereq_(19);
+var ReactTransitionGroup = _dereq_(29);
 
-var shallowCompare = _dereq_(36);
-var update = _dereq_(38);
+var shallowCompare = _dereq_(39);
+var update = _dereq_(41);
 
 React.addons = {
   CSSTransitionGroup: ReactCSSTransitionGroup,
+  LinkedStateMixin: LinkedStateMixin,
   PureRenderMixin: ReactComponentWithPureRenderMixin,
   TransitionGroup: ReactTransitionGroup,
 
@@ -4048,7 +4261,7 @@ if ("development" !== 'production') {
 }
 
 module.exports = React;
-},{"12":12,"18":18,"25":25,"36":36,"38":38,"4":4,"5":5,"6":6}],28:[function(_dereq_,module,exports){
+},{"13":13,"19":19,"29":29,"3":3,"39":39,"41":41,"5":5,"6":6,"7":7}],32:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -4061,26 +4274,26 @@ module.exports = React;
 
 'use strict';
 
-var _assign = _dereq_(46);
+var _assign = _dereq_(49);
 
-var ReactWithAddons = _dereq_(27);
+var ReactWithAddons = _dereq_(31);
 
 // `version` will be added here by the React module.
 var ReactWithAddonsUMDEntry = _assign({
   __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: {
-    ReactCurrentOwner: _dereq_(13)
+    ReactCurrentOwner: _dereq_(14)
   }
 }, ReactWithAddons);
 
 if ("development" !== 'production') {
   _assign(ReactWithAddonsUMDEntry.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED, {
     // ReactComponentTreeHook should not be included in production.
-    ReactComponentTreeHook: _dereq_(11)
+    ReactComponentTreeHook: _dereq_(12)
   });
 }
 
 module.exports = ReactWithAddonsUMDEntry;
-},{"11":11,"13":13,"27":27,"46":46}],29:[function(_dereq_,module,exports){
+},{"12":12,"14":14,"31":31,"49":49}],33:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -4106,7 +4319,7 @@ if ("development" !== 'production') {
 }
 
 module.exports = canDefineProperty;
-},{}],30:[function(_dereq_,module,exports){
+},{}],34:[function(_dereq_,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -4120,12 +4333,13 @@ module.exports = canDefineProperty;
 
 'use strict';
 
-var _prodInvariant = _dereq_(35);
+var _prodInvariant = _dereq_(38);
 
-var ReactPropTypeLocationNames = _dereq_(20);
+var ReactPropTypeLocationNames = _dereq_(22);
+var ReactPropTypesSecret = _dereq_(24);
 
-var invariant = _dereq_(43);
-var warning = _dereq_(45);
+var invariant = _dereq_(46);
+var warning = _dereq_(48);
 
 var ReactComponentTreeHook;
 
@@ -4135,7 +4349,7 @@ if (typeof process !== 'undefined' && process.env && "development" === 'test') {
   // https://github.com/facebook/react/issues/7240
   // Remove the inline requires when we don't need them anymore:
   // https://github.com/facebook/react/pull/7178
-  ReactComponentTreeHook = _dereq_(11);
+  ReactComponentTreeHook = _dereq_(12);
 }
 
 var loggedTypeFailures = {};
@@ -4163,7 +4377,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
         // This is intentionally an invariant that gets caught. It's the same
         // behavior as without this statement except with a better message.
         !(typeof typeSpecs[typeSpecName] === 'function') ? "development" !== 'production' ? invariant(false, '%s: %s type `%s` is invalid; it must be a function, usually from React.PropTypes.', componentName || 'React class', ReactPropTypeLocationNames[location], typeSpecName) : _prodInvariant('84', componentName || 'React class', ReactPropTypeLocationNames[location], typeSpecName) : void 0;
-        error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location);
+        error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret);
       } catch (ex) {
         error = ex;
       }
@@ -4177,7 +4391,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
         if ("development" !== 'production') {
           if (!ReactComponentTreeHook) {
-            ReactComponentTreeHook = _dereq_(11);
+            ReactComponentTreeHook = _dereq_(12);
           }
           if (debugID !== null) {
             componentStackInfo = ReactComponentTreeHook.getStackAddendumByID(debugID);
@@ -4194,7 +4408,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
 module.exports = checkReactTypeSpec;
 }).call(this,undefined)
-},{"11":11,"20":20,"35":35,"43":43,"45":45}],31:[function(_dereq_,module,exports){
+},{"12":12,"22":22,"24":24,"38":38,"46":46,"48":48}],35:[function(_dereq_,module,exports){
 (function (process){
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -4210,8 +4424,8 @@ module.exports = checkReactTypeSpec;
 'use strict';
 
 var KeyEscapeUtils = _dereq_(2);
-var traverseAllChildren = _dereq_(37);
-var warning = _dereq_(45);
+var traverseAllChildren = _dereq_(40);
+var warning = _dereq_(48);
 
 var ReactComponentTreeHook;
 
@@ -4221,7 +4435,7 @@ if (typeof process !== 'undefined' && process.env && "development" === 'test') {
   // https://github.com/facebook/react/issues/7240
   // Remove the inline requires when we don't need them anymore:
   // https://github.com/facebook/react/pull/7178
-  ReactComponentTreeHook = _dereq_(11);
+  ReactComponentTreeHook = _dereq_(12);
 }
 
 /**
@@ -4237,7 +4451,7 @@ function flattenSingleChildIntoContext(traverseContext, child, name, selfDebugID
     var keyUnique = result[name] === undefined;
     if ("development" !== 'production') {
       if (!ReactComponentTreeHook) {
-        ReactComponentTreeHook = _dereq_(11);
+        ReactComponentTreeHook = _dereq_(12);
       }
       if (!keyUnique) {
         "development" !== 'production' ? warning(false, 'flattenChildren(...): Encountered two children with the same key, ' + '`%s`. Child keys must be unique; when two children share a key, only ' + 'the first child will be used.%s', KeyEscapeUtils.unescape(name), ReactComponentTreeHook.getStackAddendumByID(selfDebugID)) : void 0;
@@ -4272,45 +4486,7 @@ function flattenChildren(children, selfDebugID) {
 
 module.exports = flattenChildren;
 }).call(this,undefined)
-},{"11":11,"2":2,"37":37,"45":45}],32:[function(_dereq_,module,exports){
-/**
- * Copyright 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * 
- */
-
-'use strict';
-
-function getComponentName(instanceOrFiber) {
-  if ("development" !== 'production') {
-    if (typeof instanceOrFiber.getName === 'function') {
-      // Stack reconciler
-      var instance = instanceOrFiber;
-      return instance.getName() || 'Component';
-    }
-    if (typeof instanceOrFiber.tag === 'number') {
-      // Fiber reconciler
-      var fiber = instanceOrFiber;
-      var type = fiber.type;
-
-      if (typeof type === 'string') {
-        return type;
-      }
-      if (typeof type === 'function') {
-        return type.displayName || type.name || null;
-      }
-    }
-  }
-  return null;
-}
-
-module.exports = getComponentName;
-},{}],33:[function(_dereq_,module,exports){
+},{"12":12,"2":2,"40":40,"48":48}],36:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -4351,7 +4527,7 @@ function getIteratorFn(maybeIterable) {
 }
 
 module.exports = getIteratorFn;
-},{}],34:[function(_dereq_,module,exports){
+},{}],37:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -4363,17 +4539,17 @@ module.exports = getIteratorFn;
  */
 'use strict';
 
-var _prodInvariant = _dereq_(35);
+var _prodInvariant = _dereq_(38);
 
-var ReactElement = _dereq_(15);
+var ReactElement = _dereq_(16);
 
-var invariant = _dereq_(43);
+var invariant = _dereq_(46);
 
 /**
  * Returns the first child in a collection of children and verifies that there
  * is only one child in the collection.
  *
- * See https://facebook.github.io/react/docs/react-api.html#react.children.only
+ * See https://facebook.github.io/react/docs/top-level-api.html#react.children.only
  *
  * The current implementation of this function assumes that a single child gets
  * passed without a wrapper, but the purpose of this helper function is to
@@ -4389,7 +4565,7 @@ function onlyChild(children) {
 }
 
 module.exports = onlyChild;
-},{"15":15,"35":35,"43":43}],35:[function(_dereq_,module,exports){
+},{"16":16,"38":38,"46":46}],38:[function(_dereq_,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -4428,7 +4604,7 @@ function reactProdInvariant(code) {
 }
 
 module.exports = reactProdInvariant;
-},{}],36:[function(_dereq_,module,exports){
+},{}],39:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -4441,7 +4617,7 @@ module.exports = reactProdInvariant;
 
 'use strict';
 
-var shallowEqual = _dereq_(44);
+var shallowEqual = _dereq_(47);
 
 /**
  * Does a shallow comparison for props and state.
@@ -4453,7 +4629,7 @@ function shallowCompare(instance, nextProps, nextState) {
 }
 
 module.exports = shallowCompare;
-},{"44":44}],37:[function(_dereq_,module,exports){
+},{"47":47}],40:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -4466,15 +4642,15 @@ module.exports = shallowCompare;
 
 'use strict';
 
-var _prodInvariant = _dereq_(35);
+var _prodInvariant = _dereq_(38);
 
-var ReactCurrentOwner = _dereq_(13);
-var REACT_ELEMENT_TYPE = _dereq_(16);
+var ReactCurrentOwner = _dereq_(14);
+var REACT_ELEMENT_TYPE = _dereq_(17);
 
-var getIteratorFn = _dereq_(33);
-var invariant = _dereq_(43);
+var getIteratorFn = _dereq_(36);
+var invariant = _dereq_(46);
 var KeyEscapeUtils = _dereq_(2);
-var warning = _dereq_(45);
+var warning = _dereq_(48);
 
 var SEPARATOR = '.';
 var SUBSEPARATOR = ':';
@@ -4629,7 +4805,7 @@ function traverseAllChildren(children, callback, traverseContext) {
 }
 
 module.exports = traverseAllChildren;
-},{"13":13,"16":16,"2":2,"33":33,"35":35,"43":43,"45":45}],38:[function(_dereq_,module,exports){
+},{"14":14,"17":17,"2":2,"36":36,"38":38,"46":46,"48":48}],41:[function(_dereq_,module,exports){
 /**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -4644,10 +4820,10 @@ module.exports = traverseAllChildren;
 
 'use strict';
 
-var _prodInvariant = _dereq_(35),
-    _assign = _dereq_(46);
+var _prodInvariant = _dereq_(38),
+    _assign = _dereq_(49);
 
-var invariant = _dereq_(43);
+var invariant = _dereq_(46);
 var hasOwnProperty = {}.hasOwnProperty;
 
 function shallowCopy(x) {
@@ -4741,7 +4917,7 @@ function update(value, spec) {
 }
 
 module.exports = update;
-},{"35":35,"43":43,"46":46}],39:[function(_dereq_,module,exports){
+},{"38":38,"46":46,"49":49}],42:[function(_dereq_,module,exports){
 'use strict';
 
 /**
@@ -4755,7 +4931,7 @@ module.exports = update;
  * @typechecks
  */
 
-var invariant = _dereq_(43);
+var invariant = _dereq_(46);
 
 /**
  * The CSSCore module specifies the API (and implements most of the methods)
@@ -4863,7 +5039,7 @@ var CSSCore = {
 };
 
 module.exports = CSSCore;
-},{"43":43}],40:[function(_dereq_,module,exports){
+},{"46":46}],43:[function(_dereq_,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -4899,7 +5075,7 @@ var ExecutionEnvironment = {
 };
 
 module.exports = ExecutionEnvironment;
-},{}],41:[function(_dereq_,module,exports){
+},{}],44:[function(_dereq_,module,exports){
 "use strict";
 
 /**
@@ -4938,7 +5114,7 @@ emptyFunction.thatReturnsArgument = function (arg) {
 };
 
 module.exports = emptyFunction;
-},{}],42:[function(_dereq_,module,exports){
+},{}],45:[function(_dereq_,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -4958,7 +5134,7 @@ if ("development" !== 'production') {
 }
 
 module.exports = emptyObject;
-},{}],43:[function(_dereq_,module,exports){
+},{}],46:[function(_dereq_,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -5008,7 +5184,7 @@ function invariant(condition, format, a, b, c, d, e, f) {
 }
 
 module.exports = invariant;
-},{}],44:[function(_dereq_,module,exports){
+},{}],47:[function(_dereq_,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -5076,7 +5252,7 @@ function shallowEqual(objA, objB) {
 }
 
 module.exports = shallowEqual;
-},{}],45:[function(_dereq_,module,exports){
+},{}],48:[function(_dereq_,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -5089,7 +5265,7 @@ module.exports = shallowEqual;
 
 'use strict';
 
-var emptyFunction = _dereq_(41);
+var emptyFunction = _dereq_(44);
 
 /**
  * Similar to invariant but only logs a warning if the condition is not met.
@@ -5138,7 +5314,7 @@ if ("development" !== 'production') {
 }
 
 module.exports = warning;
-},{"41":41}],46:[function(_dereq_,module,exports){
+},{"44":44}],49:[function(_dereq_,module,exports){
 'use strict';
 /* eslint-disable no-unused-vars */
 var hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -5223,5 +5399,5 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	return to;
 };
 
-},{}]},{},[28])(28)
+},{}]},{},[32])(32)
 });
