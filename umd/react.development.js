@@ -76,7 +76,7 @@ function shouldUseNative() {
 	}
 }
 
-var objectAssign = shouldUseNative() ? Object.assign : function (target, source) {
+var index$2 = shouldUseNative() ? Object.assign : function (target, source) {
 	var from;
 	var to = toObject(target);
 	var symbols;
@@ -108,10 +108,9 @@ var objectAssign = shouldUseNative() ? Object.assign : function (target, source)
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
- *
- * @providesModule reactProdInvariant
- * 
  */
+
+var ReactVersion = '16.0.0';
 
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -121,164 +120,6 @@ var objectAssign = shouldUseNative() ? Object.assign : function (target, source)
  *
  * 
  */
-
-function makeEmptyFunction(arg) {
-  return function () {
-    return arg;
-  };
-}
-
-/**
- * This function accepts and discards inputs; it has no side effects. This is
- * primarily useful idiomatically for overridable function endpoints which
- * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
- */
-var emptyFunction = function emptyFunction() {};
-
-emptyFunction.thatReturns = makeEmptyFunction;
-emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
-emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
-emptyFunction.thatReturnsNull = makeEmptyFunction(null);
-emptyFunction.thatReturnsThis = function () {
-  return this;
-};
-emptyFunction.thatReturnsArgument = function (arg) {
-  return arg;
-};
-
-var emptyFunction_1 = emptyFunction;
-
-/**
- * Similar to invariant but only logs a warning if the condition is not met.
- * This can be used to log issues in development environments in critical
- * paths. Removing the logging code for production environments will keep the
- * same logic and follow the same code paths.
- */
-
-var warning$1 = emptyFunction_1;
-
-{
-  var printWarning = function printWarning(format) {
-    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
-    }
-
-    var argIndex = 0;
-    var message = 'Warning: ' + format.replace(/%s/g, function () {
-      return args[argIndex++];
-    });
-    if (typeof console !== 'undefined') {
-      console.error(message);
-    }
-    try {
-      // --- Welcome to debugging React ---
-      // This error was thrown as a convenience so that you can use this stack
-      // to find the callsite that caused this warning to fire.
-      throw new Error(message);
-    } catch (x) {}
-  };
-
-  warning$1 = function warning(condition, format) {
-    if (format === undefined) {
-      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
-    }
-
-    if (format.indexOf('Failed Composite propType: ') === 0) {
-      return; // Ignore CompositeComponent proptype check.
-    }
-
-    if (!condition) {
-      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-        args[_key2 - 2] = arguments[_key2];
-      }
-
-      printWarning.apply(undefined, [format].concat(args));
-    }
-  };
-}
-
-var warning_1 = warning$1;
-
-{
-  var warning = warning_1;
-}
-
-function warnNoop(publicInstance, callerName) {
-  {
-    var constructor = publicInstance.constructor;
-    warning(false, '%s(...): Can only update a mounted or mounting component. ' + 'This usually means you called %s() on an unmounted component. ' + 'This is a no-op.\n\nPlease check the code for the %s component.', callerName, callerName, constructor && (constructor.displayName || constructor.name) || 'ReactClass');
-  }
-}
-
-/**
- * This is the abstract API for an update queue.
- */
-var ReactNoopUpdateQueue = {
-  /**
-   * Checks whether or not this composite component is mounted.
-   * @param {ReactClass} publicInstance The instance we want to test.
-   * @return {boolean} True if mounted, false otherwise.
-   * @protected
-   * @final
-   */
-  isMounted: function (publicInstance) {
-    return false;
-  },
-
-  /**
-   * Forces an update. This should only be invoked when it is known with
-   * certainty that we are **not** in a DOM transaction.
-   *
-   * You may want to call this when you know that some deeper aspect of the
-   * component's state has changed but `setState` was not called.
-   *
-   * This will not invoke `shouldComponentUpdate`, but it will invoke
-   * `componentWillUpdate` and `componentDidUpdate`.
-   *
-   * @param {ReactClass} publicInstance The instance that should rerender.
-   * @param {?function} callback Called after component is updated.
-   * @param {?string} callerName name of the calling function in the public API.
-   * @internal
-   */
-  enqueueForceUpdate: function (publicInstance, callback, callerName) {
-    warnNoop(publicInstance, 'forceUpdate');
-  },
-
-  /**
-   * Replaces all of the state. Always use this or `setState` to mutate state.
-   * You should treat `this.state` as immutable.
-   *
-   * There is no guarantee that `this.state` will be immediately updated, so
-   * accessing `this.state` after calling this method may return the old value.
-   *
-   * @param {ReactClass} publicInstance The instance that should rerender.
-   * @param {object} completeState Next state.
-   * @param {?function} callback Called after component is updated.
-   * @param {?string} callerName name of the calling function in the public API.
-   * @internal
-   */
-  enqueueReplaceState: function (publicInstance, completeState, callback, callerName) {
-    warnNoop(publicInstance, 'replaceState');
-  },
-
-  /**
-   * Sets a subset of the state. This only exists because _pendingState is
-   * internal. This provides a merging strategy that is not available to deep
-   * properties which is confusing. TODO: Expose pendingState or don't use it
-   * during the merge.
-   *
-   * @param {ReactClass} publicInstance The instance that should rerender.
-   * @param {object} partialState Next partial state to be merged with state.
-   * @param {?function} callback Called after component is updated.
-   * @param {?string} Name of the calling function in the public API.
-   * @internal
-   */
-  enqueueSetState: function (publicInstance, partialState, callback, callerName) {
-    warnNoop(publicInstance, 'setState');
-  }
-};
-
-var ReactNoopUpdateQueue_1 = ReactNoopUpdateQueue;
 
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -353,8 +194,6 @@ var invariant_1 = invariant;
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
- *
- * @providesModule lowPriorityWarning
  */
 
 /**
@@ -374,7 +213,7 @@ var invariant_1 = invariant;
 var lowPriorityWarning = function () {};
 
 {
-  var printWarning$1 = function (format) {
+  var printWarning = function (format) {
     for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
       args[_key - 1] = arguments[_key];
     }
@@ -403,12 +242,186 @@ var lowPriorityWarning = function () {};
         args[_key2 - 2] = arguments[_key2];
       }
 
-      printWarning$1.apply(undefined, [format].concat(args));
+      printWarning.apply(undefined, [format].concat(args));
     }
   };
 }
 
 var lowPriorityWarning_1 = lowPriorityWarning;
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * 
+ */
+
+function makeEmptyFunction(arg) {
+  return function () {
+    return arg;
+  };
+}
+
+/**
+ * This function accepts and discards inputs; it has no side effects. This is
+ * primarily useful idiomatically for overridable function endpoints which
+ * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
+ */
+var emptyFunction = function emptyFunction() {};
+
+emptyFunction.thatReturns = makeEmptyFunction;
+emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
+emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
+emptyFunction.thatReturnsNull = makeEmptyFunction(null);
+emptyFunction.thatReturnsThis = function () {
+  return this;
+};
+emptyFunction.thatReturnsArgument = function (arg) {
+  return arg;
+};
+
+var emptyFunction_1 = emptyFunction;
+
+/**
+ * Similar to invariant but only logs a warning if the condition is not met.
+ * This can be used to log issues in development environments in critical
+ * paths. Removing the logging code for production environments will keep the
+ * same logic and follow the same code paths.
+ */
+
+var warning$1 = emptyFunction_1;
+
+{
+  var printWarning$1 = function printWarning(format) {
+    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    var argIndex = 0;
+    var message = 'Warning: ' + format.replace(/%s/g, function () {
+      return args[argIndex++];
+    });
+    if (typeof console !== 'undefined') {
+      console.error(message);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
+
+  warning$1 = function warning(condition, format) {
+    if (format === undefined) {
+      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
+    }
+
+    if (format.indexOf('Failed Composite propType: ') === 0) {
+      return; // Ignore CompositeComponent proptype check.
+    }
+
+    if (!condition) {
+      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+        args[_key2 - 2] = arguments[_key2];
+      }
+
+      printWarning$1.apply(undefined, [format].concat(args));
+    }
+  };
+}
+
+var warning_1 = warning$1;
+
+{
+  var warning = warning_1;
+  var didWarnStateUpdateForUnmountedComponent = {};
+}
+
+function warnNoop(publicInstance, callerName) {
+  {
+    var constructor = publicInstance.constructor;
+    var componentName = constructor && (constructor.displayName || constructor.name) || 'ReactClass';
+    var warningKey = componentName + '.' + callerName;
+    if (didWarnStateUpdateForUnmountedComponent[warningKey]) {
+      return;
+    }
+    warning(false, '%s(...): Can only update a mounted or mounting component. ' + 'This usually means you called %s() on an unmounted component. ' + 'This is a no-op.\n\nPlease check the code for the %s component.', callerName, callerName, componentName);
+    didWarnStateUpdateForUnmountedComponent[warningKey] = true;
+  }
+}
+
+/**
+ * This is the abstract API for an update queue.
+ */
+var ReactNoopUpdateQueue = {
+  /**
+   * Checks whether or not this composite component is mounted.
+   * @param {ReactClass} publicInstance The instance we want to test.
+   * @return {boolean} True if mounted, false otherwise.
+   * @protected
+   * @final
+   */
+  isMounted: function (publicInstance) {
+    return false;
+  },
+
+  /**
+   * Forces an update. This should only be invoked when it is known with
+   * certainty that we are **not** in a DOM transaction.
+   *
+   * You may want to call this when you know that some deeper aspect of the
+   * component's state has changed but `setState` was not called.
+   *
+   * This will not invoke `shouldComponentUpdate`, but it will invoke
+   * `componentWillUpdate` and `componentDidUpdate`.
+   *
+   * @param {ReactClass} publicInstance The instance that should rerender.
+   * @param {?function} callback Called after component is updated.
+   * @param {?string} callerName name of the calling function in the public API.
+   * @internal
+   */
+  enqueueForceUpdate: function (publicInstance, callback, callerName) {
+    warnNoop(publicInstance, 'forceUpdate');
+  },
+
+  /**
+   * Replaces all of the state. Always use this or `setState` to mutate state.
+   * You should treat `this.state` as immutable.
+   *
+   * There is no guarantee that `this.state` will be immediately updated, so
+   * accessing `this.state` after calling this method may return the old value.
+   *
+   * @param {ReactClass} publicInstance The instance that should rerender.
+   * @param {object} completeState Next state.
+   * @param {?function} callback Called after component is updated.
+   * @param {?string} callerName name of the calling function in the public API.
+   * @internal
+   */
+  enqueueReplaceState: function (publicInstance, completeState, callback, callerName) {
+    warnNoop(publicInstance, 'replaceState');
+  },
+
+  /**
+   * Sets a subset of the state. This only exists because _pendingState is
+   * internal. This provides a merging strategy that is not available to deep
+   * properties which is confusing. TODO: Expose pendingState or don't use it
+   * during the merge.
+   *
+   * @param {ReactClass} publicInstance The instance that should rerender.
+   * @param {object} partialState Next partial state to be merged with state.
+   * @param {?function} callback Called after component is updated.
+   * @param {?string} Name of the calling function in the public API.
+   * @internal
+   */
+  enqueueSetState: function (publicInstance, partialState, callback, callerName) {
+    warnNoop(publicInstance, 'setState');
+  }
+};
+
+var ReactNoopUpdateQueue_1 = ReactNoopUpdateQueue;
 
 /**
  * Base class helpers for the updating state of a component.
@@ -515,7 +528,7 @@ ComponentDummy.prototype = ReactComponent.prototype;
 var pureComponentPrototype = ReactPureComponent.prototype = new ComponentDummy();
 pureComponentPrototype.constructor = ReactPureComponent;
 // Avoid an extra prototype jump for these methods.
-objectAssign(pureComponentPrototype, ReactComponent.prototype);
+index$2(pureComponentPrototype, ReactComponent.prototype);
 pureComponentPrototype.isPureReactComponent = true;
 
 function ReactAsyncComponent(props, context, updater) {
@@ -531,7 +544,7 @@ function ReactAsyncComponent(props, context, updater) {
 var asyncComponentPrototype = ReactAsyncComponent.prototype = new ComponentDummy();
 asyncComponentPrototype.constructor = ReactAsyncComponent;
 // Avoid an extra prototype jump for these methods.
-objectAssign(asyncComponentPrototype, ReactComponent.prototype);
+index$2(asyncComponentPrototype, ReactComponent.prototype);
 asyncComponentPrototype.unstable_isAsyncReactComponent = true;
 asyncComponentPrototype.render = function () {
   return this.props.children;
@@ -549,7 +562,6 @@ var ReactBaseClasses = {
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @providesModule ReactCurrentOwner
  * 
  */
 
@@ -822,7 +834,7 @@ ReactElement.cloneElement = function (element, config, children) {
   var propName;
 
   // Original props are copied
-  var props = objectAssign({}, element.props);
+  var props = index$2({}, element.props);
 
   // Reserved names are extracted
   var key = element.key;
@@ -899,7 +911,6 @@ var ReactElement_1 = ReactElement;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @providesModule ReactDebugCurrentFrame
  * 
  */
 
@@ -1228,17 +1239,6 @@ var ReactChildren = {
 var ReactChildren_1 = ReactChildren;
 
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @providesModule ReactVersion
- */
-
-var ReactVersion = '16.0.0';
-
-/**
  * Returns the first child in a collection of children and verifies that there
  * is only one child in the collection.
  *
@@ -1258,6 +1258,42 @@ function onlyChild(children) {
 }
 
 var onlyChild_1 = onlyChild;
+
+/**
+ * Copyright (c) 2016-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * 
+ */
+
+var describeComponentFrame$1 = function (name, source, ownerName) {
+  return '\n    in ' + (name || 'Unknown') + (source ? ' (at ' + source.fileName.replace(/^.*[\\\/]/, '') + ':' + source.lineNumber + ')' : ownerName ? ' (created by ' + ownerName + ')' : '');
+};
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * 
+ */
+
+function getComponentName$1(fiber) {
+  var type = fiber.type;
+
+  if (typeof type === 'string') {
+    return type;
+  }
+  if (typeof type === 'function') {
+    return type.displayName || type.name;
+  }
+  return null;
+}
+
+var getComponentName_1 = getComponentName$1;
 
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -1321,51 +1357,14 @@ function checkPropTypes$1(typeSpecs, values, location, componentName, getStack) 
 
 var checkPropTypes_1 = checkPropTypes$1;
 
-/**
- * Copyright (c) 2016-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * 
- * @providesModule describeComponentFrame
- */
-
-var describeComponentFrame$1 = function (name, source, ownerName) {
-  return '\n    in ' + (name || 'Unknown') + (source ? ' (at ' + source.fileName.replace(/^.*[\\\/]/, '') + ':' + source.lineNumber + ')' : ownerName ? ' (created by ' + ownerName + ')' : '');
-};
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @providesModule getComponentName
- * 
- */
-
-function getComponentName$1(fiber) {
-  var type = fiber.type;
-
-  if (typeof type === 'string') {
-    return type;
-  }
-  if (typeof type === 'function') {
-    return type.displayName || type.name;
-  }
-  return null;
-}
-
-var getComponentName_1 = getComponentName$1;
-
 {
-  var checkPropTypes = checkPropTypes_1;
   var lowPriorityWarning$1 = lowPriorityWarning_1;
-  var ReactDebugCurrentFrame$1 = ReactDebugCurrentFrame_1;
-  var warning$4 = warning_1;
   var describeComponentFrame = describeComponentFrame$1;
   var getComponentName = getComponentName_1;
+  var checkPropTypes = checkPropTypes_1;
+  var warning$4 = warning_1;
+
+  var ReactDebugCurrentFrame$1 = ReactDebugCurrentFrame_1;
 
   var currentlyValidatingElement = null;
 
@@ -1376,6 +1375,8 @@ var getComponentName_1 = getComponentName$1;
       return '#text';
     } else if (typeof element.type === 'string') {
       return element.type;
+    } else if (element.type === REACT_FRAGMENT_TYPE$1) {
+      return 'React.Fragment';
     } else {
       return element.type.displayName || element.type.name || 'Unknown';
     }
@@ -1391,6 +1392,10 @@ var getComponentName_1 = getComponentName$1;
     stack += ReactDebugCurrentFrame$1.getStackAddendum() || '';
     return stack;
   };
+
+  var REACT_FRAGMENT_TYPE$1 = typeof Symbol === 'function' && Symbol['for'] && Symbol['for']('react.fragment') || 0xeacb;
+
+  var VALID_FRAGMENT_PROPS = new Map([['children', true], ['key', true]]);
 }
 
 var ITERATOR_SYMBOL$1 = typeof Symbol === 'function' && Symbol.iterator;
@@ -1541,9 +1546,51 @@ function validatePropTypes(element) {
   }
 }
 
+/**
+ * Given a fragment, validate that it can only be provided with fragment props
+ * @param {ReactElement} fragment
+ */
+function validateFragmentProps(fragment) {
+  currentlyValidatingElement = fragment;
+
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = Object.keys(fragment.props)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var key = _step.value;
+
+      if (!VALID_FRAGMENT_PROPS.has(key)) {
+        warning$4(false, 'Invalid prop `%s` supplied to `React.Fragment`. ' + 'React.Fragment can only have `key` and `children` props.%s', key, getStackAddendum$1());
+        break;
+      }
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator['return']) {
+        _iterator['return']();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+
+  if (fragment.ref !== null) {
+    warning$4(false, 'Invalid attribute `ref` supplied to `React.Fragment`.%s', getStackAddendum$1());
+  }
+
+  currentlyValidatingElement = null;
+}
+
 var ReactElementValidator$1 = {
   createElement: function (type, props, children) {
-    var validType = typeof type === 'string' || typeof type === 'function';
+    var validType = typeof type === 'string' || typeof type === 'function' || typeof type === 'symbol' || typeof type === 'number';
     // We warn in this case but don't throw. We expect the element creation to
     // succeed and there will likely be errors in render.
     if (!validType) {
@@ -1583,7 +1630,11 @@ var ReactElementValidator$1 = {
       }
     }
 
-    validatePropTypes(element);
+    if (typeof type === 'symbol' && type === REACT_FRAGMENT_TYPE$1) {
+      validateFragmentProps(element);
+    } else {
+      validatePropTypes(element);
+    }
 
     return element;
   },
@@ -1632,6 +1683,8 @@ var cloneElement = ReactElement_1.cloneElement;
   cloneElement = ReactElementValidator.cloneElement;
 }
 
+var REACT_FRAGMENT_TYPE = typeof Symbol === 'function' && Symbol['for'] && Symbol['for']('react.fragment') || 0xeacb;
+
 var React = {
   Children: {
     map: ReactChildren_1.map,
@@ -1644,6 +1697,7 @@ var React = {
   Component: ReactBaseClasses.Component,
   PureComponent: ReactBaseClasses.PureComponent,
   unstable_AsyncComponent: ReactBaseClasses.AsyncComponent,
+  Fragment: REACT_FRAGMENT_TYPE,
 
   createElement: createElement,
   cloneElement: cloneElement,
@@ -1656,21 +1710,24 @@ var React = {
   __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: {
     ReactCurrentOwner: ReactCurrentOwner_1,
     // Used by renderers to avoid bundling object-assign twice in UMD bundles:
-    assign: objectAssign
+    assign: index$2
   }
 };
 
 {
-  objectAssign(React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED, {
+  index$2(React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED, {
     // These should not be included in production.
-    ReactDebugCurrentFrame: ReactDebugCurrentFrame_1
+    ReactDebugCurrentFrame: ReactDebugCurrentFrame_1,
+    // Shim for React DOM 16.0.0 which still destructured (but not used) this.
+    // TODO: remove in React 17.0.
+    ReactComponentTreeHook: {}
   });
 }
 
 var React_1 = React;
 
-var react = React_1;
+var index = React_1;
 
-return react;
+return index;
 
 })));

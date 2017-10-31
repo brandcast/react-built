@@ -15,9 +15,9 @@ if (process.env.NODE_ENV !== "production") {
 'use strict';
 
 var objectAssign$1 = require('object-assign');
-var require$$0 = require('fbjs/lib/warning');
 var emptyObject = require('fbjs/lib/emptyObject');
 var invariant = require('fbjs/lib/invariant');
+var require$$0 = require('fbjs/lib/warning');
 var emptyFunction = require('fbjs/lib/emptyFunction');
 var checkPropTypes = require('prop-types/checkPropTypes');
 
@@ -26,19 +26,94 @@ var checkPropTypes = require('prop-types/checkPropTypes');
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
+ */
+
+var ReactVersion = '16.0.0';
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
  *
- * @providesModule reactProdInvariant
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
  * 
  */
 
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/**
+ * Forked from fbjs/warning:
+ * https://github.com/facebook/fbjs/blob/e66ba20ad5be433eb54423f2b097d829324d9de6/packages/fbjs/src/__forks__/warning.js
+ *
+ * Only change is we use console.warn instead of console.error,
+ * and do nothing when 'console' is not supported.
+ * This really simplifies the code.
+ * ---
+ * Similar to invariant but only logs a warning if the condition is not met.
+ * This can be used to log issues in development environments in critical
+ * paths. Removing the logging code for production environments will keep the
+ * same logic and follow the same code paths.
+ */
+
+var lowPriorityWarning = function () {};
+
+{
+  var printWarning = function (format) {
+    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    var argIndex = 0;
+    var message = 'Warning: ' + format.replace(/%s/g, function () {
+      return args[argIndex++];
+    });
+    if (typeof console !== 'undefined') {
+      console.warn(message);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
+
+  lowPriorityWarning = function (condition, format) {
+    if (format === undefined) {
+      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
+    }
+    if (!condition) {
+      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+        args[_key2 - 2] = arguments[_key2];
+      }
+
+      printWarning.apply(undefined, [format].concat(args));
+    }
+  };
+}
+
+var lowPriorityWarning_1 = lowPriorityWarning;
+
 {
   var warning = require$$0;
+  var didWarnStateUpdateForUnmountedComponent = {};
 }
 
 function warnNoop(publicInstance, callerName) {
   {
     var constructor = publicInstance.constructor;
-    warning(false, '%s(...): Can only update a mounted or mounting component. ' + 'This usually means you called %s() on an unmounted component. ' + 'This is a no-op.\n\nPlease check the code for the %s component.', callerName, callerName, constructor && (constructor.displayName || constructor.name) || 'ReactClass');
+    var componentName = constructor && (constructor.displayName || constructor.name) || 'ReactClass';
+    var warningKey = componentName + '.' + callerName;
+    if (didWarnStateUpdateForUnmountedComponent[warningKey]) {
+      return;
+    }
+    warning(false, '%s(...): Can only update a mounted or mounting component. ' + 'This usually means you called %s() on an unmounted component. ' + 'This is a no-op.\n\nPlease check the code for the %s component.', callerName, callerName, componentName);
+    didWarnStateUpdateForUnmountedComponent[warningKey] = true;
   }
 }
 
@@ -111,68 +186,6 @@ var ReactNoopUpdateQueue = {
 };
 
 var ReactNoopUpdateQueue_1 = ReactNoopUpdateQueue;
-
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @providesModule lowPriorityWarning
- */
-
-/**
- * Forked from fbjs/warning:
- * https://github.com/facebook/fbjs/blob/e66ba20ad5be433eb54423f2b097d829324d9de6/packages/fbjs/src/__forks__/warning.js
- *
- * Only change is we use console.warn instead of console.error,
- * and do nothing when 'console' is not supported.
- * This really simplifies the code.
- * ---
- * Similar to invariant but only logs a warning if the condition is not met.
- * This can be used to log issues in development environments in critical
- * paths. Removing the logging code for production environments will keep the
- * same logic and follow the same code paths.
- */
-
-var lowPriorityWarning = function () {};
-
-{
-  var printWarning = function (format) {
-    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
-    }
-
-    var argIndex = 0;
-    var message = 'Warning: ' + format.replace(/%s/g, function () {
-      return args[argIndex++];
-    });
-    if (typeof console !== 'undefined') {
-      console.warn(message);
-    }
-    try {
-      // --- Welcome to debugging React ---
-      // This error was thrown as a convenience so that you can use this stack
-      // to find the callsite that caused this warning to fire.
-      throw new Error(message);
-    } catch (x) {}
-  };
-
-  lowPriorityWarning = function (condition, format) {
-    if (format === undefined) {
-      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
-    }
-    if (!condition) {
-      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-        args[_key2 - 2] = arguments[_key2];
-      }
-
-      printWarning.apply(undefined, [format].concat(args));
-    }
-  };
-}
-
-var lowPriorityWarning_1 = lowPriorityWarning;
 
 /**
  * Base class helpers for the updating state of a component.
@@ -313,7 +326,6 @@ var ReactBaseClasses = {
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @providesModule ReactCurrentOwner
  * 
  */
 
@@ -663,7 +675,6 @@ var ReactElement_1 = ReactElement;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @providesModule ReactDebugCurrentFrame
  * 
  */
 
@@ -992,17 +1003,6 @@ var ReactChildren = {
 var ReactChildren_1 = ReactChildren;
 
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @providesModule ReactVersion
- */
-
-var ReactVersion = '16.0.0';
-
-/**
  * Returns the first child in a collection of children and verifies that there
  * is only one child in the collection.
  *
@@ -1030,7 +1030,6 @@ var onlyChild_1 = onlyChild;
  * LICENSE file in the root directory of this source tree.
  *
  * 
- * @providesModule describeComponentFrame
  */
 
 var describeComponentFrame$1 = function (name, source, ownerName) {
@@ -1043,7 +1042,6 @@ var describeComponentFrame$1 = function (name, source, ownerName) {
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @providesModule getComponentName
  * 
  */
 
@@ -1062,12 +1060,13 @@ function getComponentName$1(fiber) {
 var getComponentName_1 = getComponentName$1;
 
 {
-  var checkPropTypes$1 = checkPropTypes;
   var lowPriorityWarning$1 = lowPriorityWarning_1;
-  var ReactDebugCurrentFrame$1 = ReactDebugCurrentFrame_1;
-  var warning$3 = require$$0;
   var describeComponentFrame = describeComponentFrame$1;
   var getComponentName = getComponentName_1;
+  var checkPropTypes$1 = checkPropTypes;
+  var warning$3 = require$$0;
+
+  var ReactDebugCurrentFrame$1 = ReactDebugCurrentFrame_1;
 
   var currentlyValidatingElement = null;
 
@@ -1078,6 +1077,8 @@ var getComponentName_1 = getComponentName$1;
       return '#text';
     } else if (typeof element.type === 'string') {
       return element.type;
+    } else if (element.type === REACT_FRAGMENT_TYPE$1) {
+      return 'React.Fragment';
     } else {
       return element.type.displayName || element.type.name || 'Unknown';
     }
@@ -1093,6 +1094,10 @@ var getComponentName_1 = getComponentName$1;
     stack += ReactDebugCurrentFrame$1.getStackAddendum() || '';
     return stack;
   };
+
+  var REACT_FRAGMENT_TYPE$1 = typeof Symbol === 'function' && Symbol['for'] && Symbol['for']('react.fragment') || 0xeacb;
+
+  var VALID_FRAGMENT_PROPS = new Map([['children', true], ['key', true]]);
 }
 
 var ITERATOR_SYMBOL$1 = typeof Symbol === 'function' && Symbol.iterator;
@@ -1243,9 +1248,51 @@ function validatePropTypes(element) {
   }
 }
 
+/**
+ * Given a fragment, validate that it can only be provided with fragment props
+ * @param {ReactElement} fragment
+ */
+function validateFragmentProps(fragment) {
+  currentlyValidatingElement = fragment;
+
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = Object.keys(fragment.props)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var key = _step.value;
+
+      if (!VALID_FRAGMENT_PROPS.has(key)) {
+        warning$3(false, 'Invalid prop `%s` supplied to `React.Fragment`. ' + 'React.Fragment can only have `key` and `children` props.%s', key, getStackAddendum$1());
+        break;
+      }
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator['return']) {
+        _iterator['return']();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+
+  if (fragment.ref !== null) {
+    warning$3(false, 'Invalid attribute `ref` supplied to `React.Fragment`.%s', getStackAddendum$1());
+  }
+
+  currentlyValidatingElement = null;
+}
+
 var ReactElementValidator$1 = {
   createElement: function (type, props, children) {
-    var validType = typeof type === 'string' || typeof type === 'function';
+    var validType = typeof type === 'string' || typeof type === 'function' || typeof type === 'symbol' || typeof type === 'number';
     // We warn in this case but don't throw. We expect the element creation to
     // succeed and there will likely be errors in render.
     if (!validType) {
@@ -1285,7 +1332,11 @@ var ReactElementValidator$1 = {
       }
     }
 
-    validatePropTypes(element);
+    if (typeof type === 'symbol' && type === REACT_FRAGMENT_TYPE$1) {
+      validateFragmentProps(element);
+    } else {
+      validatePropTypes(element);
+    }
 
     return element;
   },
@@ -1334,6 +1385,8 @@ var cloneElement = ReactElement_1.cloneElement;
   cloneElement = ReactElementValidator.cloneElement;
 }
 
+var REACT_FRAGMENT_TYPE = typeof Symbol === 'function' && Symbol['for'] && Symbol['for']('react.fragment') || 0xeacb;
+
 var React = {
   Children: {
     map: ReactChildren_1.map,
@@ -1346,6 +1399,7 @@ var React = {
   Component: ReactBaseClasses.Component,
   PureComponent: ReactBaseClasses.PureComponent,
   unstable_AsyncComponent: ReactBaseClasses.AsyncComponent,
+  Fragment: REACT_FRAGMENT_TYPE,
 
   createElement: createElement,
   cloneElement: cloneElement,
@@ -1365,15 +1419,18 @@ var React = {
 {
   objectAssign$1(React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED, {
     // These should not be included in production.
-    ReactDebugCurrentFrame: ReactDebugCurrentFrame_1
+    ReactDebugCurrentFrame: ReactDebugCurrentFrame_1,
+    // Shim for React DOM 16.0.0 which still destructured (but not used) this.
+    // TODO: remove in React 17.0.
+    ReactComponentTreeHook: {}
   });
 }
 
 var React_1 = React;
 
-var react = React_1;
+var index = React_1;
 
-module.exports = react;
+module.exports = index;
 
 })();
 }
