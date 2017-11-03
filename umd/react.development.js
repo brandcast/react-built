@@ -1,4 +1,4 @@
-/** @license React v16.0.0
+/** @license React v16.1.0-beta
  * react.development.js
  *
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -18,6 +18,7 @@ object-assign
 (c) Sindre Sorhus
 @license MIT
 */
+
 
 /* eslint-disable no-unused-vars */
 var getOwnPropertySymbols = Object.getOwnPropertySymbols;
@@ -76,7 +77,7 @@ function shouldUseNative() {
 	}
 }
 
-var index$2 = shouldUseNative() ? Object.assign : function (target, source) {
+var objectAssign$1 = shouldUseNative() ? Object.assign : function (target, source) {
 	var from;
 	var to = toObject(target);
 	var symbols;
@@ -110,16 +111,11 @@ var index$2 = shouldUseNative() ? Object.assign : function (target, source) {
  * LICENSE file in the root directory of this source tree.
  */
 
-var ReactVersion = '16.0.0';
 
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * 
- */
+
+// TODO: this is special because it gets imported during build.
+
+var ReactVersion = '16.1.0-beta';
 
 var ReactFeatureFlags = {
   enableAsyncSubtreeAPI: true,
@@ -131,16 +127,23 @@ var ReactFeatureFlags = {
   // Experimental persistent mode (CS):
   enablePersistentReconciler: false,
   // Exports React.Fragment
-  enableReactFragment: false
-};
+  enableReactFragment: false,
+  // Exports ReactDOM.createRoot
+  enableCreateRoot: false
+}; /**
+    * Copyright (c) 2013-present, Facebook, Inc.
+    *
+    * This source code is licensed under the MIT license found in the
+    * LICENSE file in the root directory of this source tree.
+    *
+    * 
+    */
 
 {
   if (Object.freeze) {
     Object.freeze(ReactFeatureFlags);
   }
 }
-
-var ReactFeatureFlags_1 = ReactFeatureFlags;
 
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -152,12 +155,21 @@ var ReactFeatureFlags_1 = ReactFeatureFlags;
  */
 
 /**
+ * WARNING: DO NOT manually require this module.
+ * This is a replacement for `invariant(...)` used by the error code system
+ * and will _only_ be required by the corresponding babel pass.
+ * It always throws.
+ */
+
+/**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
  */
+
+
 
 var emptyObject = {};
 
@@ -174,6 +186,8 @@ var emptyObject_1 = emptyObject;
  * LICENSE file in the root directory of this source tree.
  *
  */
+
+
 
 /**
  * Use invariant() to assert state which your program assumes to be true.
@@ -217,7 +231,7 @@ function invariant(condition, format, a, b, c, d, e, f) {
   }
 }
 
-var invariant_1 = invariant;
+var invariant_1$1 = invariant;
 
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
@@ -277,7 +291,7 @@ var lowPriorityWarning = function () {};
   };
 }
 
-var lowPriorityWarning_1 = lowPriorityWarning;
+var lowPriorityWarning$1 = lowPriorityWarning;
 
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -315,13 +329,25 @@ emptyFunction.thatReturnsArgument = function (arg) {
 var emptyFunction_1 = emptyFunction;
 
 /**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+
+
+
+
+/**
  * Similar to invariant but only logs a warning if the condition is not met.
  * This can be used to log issues in development environments in critical
  * paths. Removing the logging code for production environments will keep the
  * same logic and follow the same code paths.
  */
 
-var warning$1 = emptyFunction_1;
+var warning = emptyFunction_1;
 
 {
   var printWarning$1 = function printWarning(format) {
@@ -344,7 +370,7 @@ var warning$1 = emptyFunction_1;
     } catch (x) {}
   };
 
-  warning$1 = function warning(condition, format) {
+  warning = function warning(condition, format) {
     if (format === undefined) {
       throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
     }
@@ -363,12 +389,16 @@ var warning$1 = emptyFunction_1;
   };
 }
 
-var warning_1 = warning$1;
+var warning_1$1 = warning;
 
-{
-  var warning = warning_1;
-  var didWarnStateUpdateForUnmountedComponent = {};
-}
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+var didWarnStateUpdateForUnmountedComponent = {};
 
 function warnNoop(publicInstance, callerName) {
   {
@@ -378,7 +408,7 @@ function warnNoop(publicInstance, callerName) {
     if (didWarnStateUpdateForUnmountedComponent[warningKey]) {
       return;
     }
-    warning(false, '%s(...): Can only update a mounted or mounting component. ' + 'This usually means you called %s() on an unmounted component. ' + 'This is a no-op.\n\nPlease check the code for the %s component.', callerName, callerName, componentName);
+    warning_1$1(false, '%s(...): Can only update a mounted or mounting component. ' + 'This usually means you called %s() on an unmounted component. ' + 'This is a no-op.\n\nPlease check the code for the %s component.', callerName, callerName, componentName);
     didWarnStateUpdateForUnmountedComponent[warningKey] = true;
   }
 }
@@ -451,21 +481,26 @@ var ReactNoopUpdateQueue = {
   }
 };
 
-var ReactNoopUpdateQueue_1 = ReactNoopUpdateQueue;
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
 /**
  * Base class helpers for the updating state of a component.
  */
-function ReactComponent(props, context, updater) {
+function Component(props, context, updater) {
   this.props = props;
   this.context = context;
   this.refs = emptyObject_1;
   // We initialize the default updater but the real one gets injected by the
   // renderer.
-  this.updater = updater || ReactNoopUpdateQueue_1;
+  this.updater = updater || ReactNoopUpdateQueue;
 }
 
-ReactComponent.prototype.isReactComponent = {};
+Component.prototype.isReactComponent = {};
 
 /**
  * Sets a subset of the state. Always use this to mutate
@@ -492,8 +527,8 @@ ReactComponent.prototype.isReactComponent = {};
  * @final
  * @protected
  */
-ReactComponent.prototype.setState = function (partialState, callback) {
-  !(typeof partialState === 'object' || typeof partialState === 'function' || partialState == null) ? invariant_1(false, 'setState(...): takes an object of state variables to update or a function which returns an object of state variables.') : void 0;
+Component.prototype.setState = function (partialState, callback) {
+  !(typeof partialState === 'object' || typeof partialState === 'function' || partialState == null) ? invariant_1$1(false, 'setState(...): takes an object of state variables to update or a function which returns an object of state variables.') : void 0;
   this.updater.enqueueSetState(this, partialState, callback, 'setState');
 };
 
@@ -511,7 +546,7 @@ ReactComponent.prototype.setState = function (partialState, callback) {
  * @final
  * @protected
  */
-ReactComponent.prototype.forceUpdate = function (callback) {
+Component.prototype.forceUpdate = function (callback) {
   this.updater.enqueueForceUpdate(this, callback, 'forceUpdate');
 };
 
@@ -526,9 +561,9 @@ ReactComponent.prototype.forceUpdate = function (callback) {
     replaceState: ['replaceState', 'Refactor your code to use setState instead (see ' + 'https://github.com/facebook/react/issues/3236).']
   };
   var defineDeprecationWarning = function (methodName, info) {
-    Object.defineProperty(ReactComponent.prototype, methodName, {
+    Object.defineProperty(Component.prototype, methodName, {
       get: function () {
-        lowPriorityWarning_1(false, '%s(...) is deprecated in plain JavaScript React classes. %s', info[0], info[1]);
+        lowPriorityWarning$1(false, '%s(...) is deprecated in plain JavaScript React classes. %s', info[0], info[1]);
         return undefined;
       }
     });
@@ -543,57 +578,42 @@ ReactComponent.prototype.forceUpdate = function (callback) {
 /**
  * Base class helpers for the updating state of a component.
  */
-function ReactPureComponent(props, context, updater) {
-  // Duplicated from ReactComponent.
+function PureComponent(props, context, updater) {
+  // Duplicated from Component.
   this.props = props;
   this.context = context;
   this.refs = emptyObject_1;
   // We initialize the default updater but the real one gets injected by the
   // renderer.
-  this.updater = updater || ReactNoopUpdateQueue_1;
+  this.updater = updater || ReactNoopUpdateQueue;
 }
 
 function ComponentDummy() {}
-ComponentDummy.prototype = ReactComponent.prototype;
-var pureComponentPrototype = ReactPureComponent.prototype = new ComponentDummy();
-pureComponentPrototype.constructor = ReactPureComponent;
+ComponentDummy.prototype = Component.prototype;
+var pureComponentPrototype = PureComponent.prototype = new ComponentDummy();
+pureComponentPrototype.constructor = PureComponent;
 // Avoid an extra prototype jump for these methods.
-index$2(pureComponentPrototype, ReactComponent.prototype);
+objectAssign$1(pureComponentPrototype, Component.prototype);
 pureComponentPrototype.isPureReactComponent = true;
 
-function ReactAsyncComponent(props, context, updater) {
-  // Duplicated from ReactComponent.
+function AsyncComponent(props, context, updater) {
+  // Duplicated from Component.
   this.props = props;
   this.context = context;
   this.refs = emptyObject_1;
   // We initialize the default updater but the real one gets injected by the
   // renderer.
-  this.updater = updater || ReactNoopUpdateQueue_1;
+  this.updater = updater || ReactNoopUpdateQueue;
 }
 
-var asyncComponentPrototype = ReactAsyncComponent.prototype = new ComponentDummy();
-asyncComponentPrototype.constructor = ReactAsyncComponent;
+var asyncComponentPrototype = AsyncComponent.prototype = new ComponentDummy();
+asyncComponentPrototype.constructor = AsyncComponent;
 // Avoid an extra prototype jump for these methods.
-index$2(asyncComponentPrototype, ReactComponent.prototype);
+objectAssign$1(asyncComponentPrototype, Component.prototype);
 asyncComponentPrototype.unstable_isAsyncReactComponent = true;
 asyncComponentPrototype.render = function () {
   return this.props.children;
 };
-
-var ReactBaseClasses = {
-  Component: ReactComponent,
-  PureComponent: ReactPureComponent,
-  AsyncComponent: ReactAsyncComponent
-};
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * 
- */
 
 /**
  * Keeps track of the current owner.
@@ -607,15 +627,23 @@ var ReactCurrentOwner = {
    * @type {ReactComponent}
    */
   current: null
-};
+}; /**
+    * Copyright (c) 2013-present, Facebook, Inc.
+    *
+    * This source code is licensed under the MIT license found in the
+    * LICENSE file in the root directory of this source tree.
+    *
+    * 
+    */
 
-var ReactCurrentOwner_1 = ReactCurrentOwner;
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
 var hasOwnProperty$1 = Object.prototype.hasOwnProperty;
-
-{
-  var warning$3 = warning_1;
-}
 
 // The Symbol used to tag the ReactElement type. If there is no native Symbol
 // nor polyfill, then a plain number is used for performance.
@@ -659,7 +687,7 @@ function defineKeyPropWarningGetter(props, displayName) {
   var warnAboutAccessingKey = function () {
     if (!specialPropKeyWarningShown) {
       specialPropKeyWarningShown = true;
-      warning$3(false, '%s: `key` is not a prop. Trying to access it will result ' + 'in `undefined` being returned. If you need to access the same ' + 'value within the child component, you should pass it as a different ' + 'prop. (https://fb.me/react-special-props)', displayName);
+      warning_1$1(false, '%s: `key` is not a prop. Trying to access it will result ' + 'in `undefined` being returned. If you need to access the same ' + 'value within the child component, you should pass it as a different ' + 'prop. (https://fb.me/react-special-props)', displayName);
     }
   };
   warnAboutAccessingKey.isReactWarning = true;
@@ -673,7 +701,7 @@ function defineRefPropWarningGetter(props, displayName) {
   var warnAboutAccessingRef = function () {
     if (!specialPropRefWarningShown) {
       specialPropRefWarningShown = true;
-      warning$3(false, '%s: `ref` is not a prop. Trying to access it will result ' + 'in `undefined` being returned. If you need to access the same ' + 'value within the child component, you should pass it as a different ' + 'prop. (https://fb.me/react-special-props)', displayName);
+      warning_1$1(false, '%s: `ref` is not a prop. Trying to access it will result ' + 'in `undefined` being returned. If you need to access the same ' + 'value within the child component, you should pass it as a different ' + 'prop. (https://fb.me/react-special-props)', displayName);
     }
   };
   warnAboutAccessingRef.isReactWarning = true;
@@ -763,7 +791,7 @@ var ReactElement = function (type, key, ref, self, source, owner, props) {
  * Create and return a new ReactElement of the given type.
  * See https://reactjs.org/docs/react-api.html#createelement
  */
-ReactElement.createElement = function (type, config, children) {
+function createElement(type, config, children) {
   var propName;
 
   // Reserved names are extracted
@@ -832,39 +860,30 @@ ReactElement.createElement = function (type, config, children) {
       }
     }
   }
-  return ReactElement(type, key, ref, self, source, ReactCurrentOwner_1.current, props);
-};
+  return ReactElement(type, key, ref, self, source, ReactCurrentOwner.current, props);
+}
 
 /**
  * Return a function that produces ReactElements of a given type.
  * See https://reactjs.org/docs/react-api.html#createfactory
  */
-ReactElement.createFactory = function (type) {
-  var factory = ReactElement.createElement.bind(null, type);
-  // Expose the type on the factory and the prototype so that it can be
-  // easily accessed on elements. E.g. `<Foo />.type === Foo`.
-  // This should not be named `constructor` since this may not be the function
-  // that created the element, and it may not even be a constructor.
-  // Legacy hook TODO: Warn if this is accessed
-  factory.type = type;
-  return factory;
-};
 
-ReactElement.cloneAndReplaceKey = function (oldElement, newKey) {
+
+function cloneAndReplaceKey(oldElement, newKey) {
   var newElement = ReactElement(oldElement.type, newKey, oldElement.ref, oldElement._self, oldElement._source, oldElement._owner, oldElement.props);
 
   return newElement;
-};
+}
 
 /**
  * Clone and return a new ReactElement using element as the starting point.
  * See https://reactjs.org/docs/react-api.html#cloneelement
  */
-ReactElement.cloneElement = function (element, config, children) {
+function cloneElement(element, config, children) {
   var propName;
 
   // Original props are copied
-  var props = index$2({}, element.props);
+  var props = objectAssign$1({}, element.props);
 
   // Reserved names are extracted
   var key = element.key;
@@ -883,7 +902,7 @@ ReactElement.cloneElement = function (element, config, children) {
     if (hasValidRef(config)) {
       // Silently steal the ref from the parent.
       ref = config.ref;
-      owner = ReactCurrentOwner_1.current;
+      owner = ReactCurrentOwner.current;
     }
     if (hasValidKey(config)) {
       key = '' + config.key;
@@ -920,7 +939,7 @@ ReactElement.cloneElement = function (element, config, children) {
   }
 
   return ReactElement(element.type, key, ref, self, source, owner, props);
-};
+}
 
 /**
  * Verifies the object is a ReactElement.
@@ -929,11 +948,9 @@ ReactElement.cloneElement = function (element, config, children) {
  * @return {boolean} True if `object` is a valid component.
  * @final
  */
-ReactElement.isValidElement = function (object) {
+function isValidElement(object) {
   return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE$1;
-};
-
-var ReactElement_1 = ReactElement;
+}
 
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -959,14 +976,12 @@ var ReactDebugCurrentFrame = {};
   };
 }
 
-var ReactDebugCurrentFrame_1 = ReactDebugCurrentFrame;
-
-{
-  var warning$2 = warning_1;
-
-  var _require = ReactDebugCurrentFrame_1,
-      getStackAddendum = _require.getStackAddendum;
-}
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
 var ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
 var FAUX_ITERATOR_SYMBOL = '@@iterator'; // Before Symbol spec.
@@ -1085,7 +1100,7 @@ function traverseAllChildrenImpl(children, nameSoFar, callback, traverseContext)
       {
         // Warn about using Maps as children
         if (iteratorFn === children.entries) {
-          warning$2(didWarnAboutMaps, 'Using Maps as children is unsupported and will likely yield ' + 'unexpected results. Convert it to a sequence/iterable of keyed ' + 'ReactElements instead.%s', getStackAddendum());
+          warning_1$1(didWarnAboutMaps, 'Using Maps as children is unsupported and will likely yield ' + 'unexpected results. Convert it to a sequence/iterable of keyed ' + 'ReactElements instead.%s', ReactDebugCurrentFrame.getStackAddendum());
           didWarnAboutMaps = true;
         }
       }
@@ -1101,10 +1116,10 @@ function traverseAllChildrenImpl(children, nameSoFar, callback, traverseContext)
     } else if (type === 'object') {
       var addendum = '';
       {
-        addendum = ' If you meant to render a collection of children, use an array ' + 'instead.' + getStackAddendum();
+        addendum = ' If you meant to render a collection of children, use an array ' + 'instead.' + ReactDebugCurrentFrame.getStackAddendum();
       }
       var childrenString = '' + children;
-      invariant_1(false, 'Objects are not valid as a React child (found: %s).%s', childrenString === '[object Object]' ? 'object with keys {' + Object.keys(children).join(', ') + '}' : childrenString, addendum);
+      invariant_1$1(false, 'Objects are not valid as a React child (found: %s).%s', childrenString === '[object Object]' ? 'object with keys {' + Object.keys(children).join(', ') + '}' : childrenString, addendum);
     }
   }
 
@@ -1192,8 +1207,8 @@ function mapSingleChildIntoContext(bookKeeping, child, childKey) {
   if (Array.isArray(mappedChild)) {
     mapIntoWithKeyPrefixInternal(mappedChild, result, childKey, emptyFunction_1.thatReturnsArgument);
   } else if (mappedChild != null) {
-    if (ReactElement_1.isValidElement(mappedChild)) {
-      mappedChild = ReactElement_1.cloneAndReplaceKey(mappedChild,
+    if (isValidElement(mappedChild)) {
+      mappedChild = cloneAndReplaceKey(mappedChild,
       // Keep both the (mapped) and old keys if they differ, just as
       // traverseAllChildren used to do for objects as children
       keyPrefix + (mappedChild.key && (!child || child.key !== mappedChild.key) ? escapeUserProvidedKey(mappedChild.key) + '/' : '') + childKey);
@@ -1259,15 +1274,6 @@ function toArray(children) {
   return result;
 }
 
-var ReactChildren = {
-  forEach: forEachChildren,
-  map: mapChildren,
-  count: countChildren,
-  toArray: toArray
-};
-
-var ReactChildren_1 = ReactChildren;
-
 /**
  * Returns the first child in a collection of children and verifies that there
  * is only one child in the collection.
@@ -1283,11 +1289,9 @@ var ReactChildren_1 = ReactChildren;
  * structure.
  */
 function onlyChild(children) {
-  !ReactElement_1.isValidElement(children) ? invariant_1(false, 'React.Children.only expected to receive a single React element child.') : void 0;
+  !isValidElement(children) ? invariant_1$1(false, 'React.Children.only expected to receive a single React element child.') : void 0;
   return children;
 }
-
-var onlyChild_1 = onlyChild;
 
 /**
  * Copyright (c) 2016-present, Facebook, Inc.
@@ -1298,20 +1302,11 @@ var onlyChild_1 = onlyChild;
  * 
  */
 
-var describeComponentFrame$1 = function (name, source, ownerName) {
+var describeComponentFrame = function (name, source, ownerName) {
   return '\n    in ' + (name || 'Unknown') + (source ? ' (at ' + source.fileName.replace(/^.*[\\\/]/, '') + ':' + source.lineNumber + ')' : ownerName ? ' (created by ' + ownerName + ')' : '');
 };
 
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * 
- */
-
-function getComponentName$1(fiber) {
+function getComponentName(fiber) {
   var type = fiber.type;
 
   if (typeof type === 'string') {
@@ -1321,9 +1316,14 @@ function getComponentName$1(fiber) {
     return type.displayName || type.name;
   }
   return null;
-}
-
-var getComponentName_1 = getComponentName$1;
+} /**
+   * Copyright (c) 2013-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *
+   * 
+   */
 
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -1332,13 +1332,24 @@ var getComponentName_1 = getComponentName$1;
  * LICENSE file in the root directory of this source tree.
  */
 
+
+
 var ReactPropTypesSecret$1 = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 
 var ReactPropTypesSecret_1 = ReactPropTypesSecret$1;
 
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
 {
-  var invariant$1 = invariant_1;
-  var warning$5 = warning_1;
+  var invariant$2 = invariant_1$1;
+  var warning$2 = warning_1$1;
   var ReactPropTypesSecret = ReactPropTypesSecret_1;
   var loggedTypeFailures = {};
 }
@@ -1354,7 +1365,7 @@ var ReactPropTypesSecret_1 = ReactPropTypesSecret$1;
  * @param {?Function} getStack Returns the component stack.
  * @private
  */
-function checkPropTypes$1(typeSpecs, values, location, componentName, getStack) {
+function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
   {
     for (var typeSpecName in typeSpecs) {
       if (typeSpecs.hasOwnProperty(typeSpecName)) {
@@ -1365,12 +1376,12 @@ function checkPropTypes$1(typeSpecs, values, location, componentName, getStack) 
         try {
           // This is intentionally an invariant that gets caught. It's the same
           // behavior as without this statement except with a better message.
-          invariant$1(typeof typeSpecs[typeSpecName] === 'function', '%s: %s type `%s` is invalid; it must be a function, usually from ' + 'the `prop-types` package, but received `%s`.', componentName || 'React class', location, typeSpecName, typeof typeSpecs[typeSpecName]);
+          invariant$2(typeof typeSpecs[typeSpecName] === 'function', '%s: %s type `%s` is invalid; it must be a function, usually from ' + 'the `prop-types` package, but received `%s`.', componentName || 'React class', location, typeSpecName, typeof typeSpecs[typeSpecName]);
           error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret);
         } catch (ex) {
           error = ex;
         }
-        warning$5(!error || error instanceof Error, '%s: type specification of %s `%s` is invalid; the type checker ' + 'function must return `null` or an `Error` but returned a %s. ' + 'You may have forgotten to pass an argument to the type checker ' + 'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' + 'shape all require an argument).', componentName || 'React class', location, typeSpecName, typeof error);
+        warning$2(!error || error instanceof Error, '%s: type specification of %s `%s` is invalid; the type checker ' + 'function must return `null` or an `Error` but returned a %s. ' + 'You may have forgotten to pass an argument to the type checker ' + 'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' + 'shape all require an argument).', componentName || 'React class', location, typeSpecName, typeof error);
         if (error instanceof Error && !(error.message in loggedTypeFailures)) {
           // Only monitor this failure once because there tends to be a lot of the
           // same error.
@@ -1378,24 +1389,30 @@ function checkPropTypes$1(typeSpecs, values, location, componentName, getStack) 
 
           var stack = getStack ? getStack() : '';
 
-          warning$5(false, 'Failed %s type: %s%s', location, error.message, stack != null ? stack : '');
+          warning$2(false, 'Failed %s type: %s%s', location, error.message, stack != null ? stack : '');
         }
       }
     }
   }
 }
 
-var checkPropTypes_1 = checkPropTypes$1;
+var checkPropTypes_1$1 = checkPropTypes;
+
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/**
+ * ReactElementValidator provides a wrapper around a element factory
+ * which validates the props passed to the element. This is intended to be
+ * used only in DEV and could be replaced by a static type checker for languages
+ * that support it.
+ */
 
 {
-  var lowPriorityWarning$1 = lowPriorityWarning_1;
-  var describeComponentFrame = describeComponentFrame$1;
-  var getComponentName = getComponentName_1;
-  var checkPropTypes = checkPropTypes_1;
-  var warning$4 = warning_1;
-
-  var ReactDebugCurrentFrame$1 = ReactDebugCurrentFrame_1;
-
   var currentlyValidatingElement = null;
 
   var getDisplayName = function (element) {
@@ -1412,14 +1429,14 @@ var checkPropTypes_1 = checkPropTypes$1;
     }
   };
 
-  var getStackAddendum$1 = function () {
+  var getStackAddendum = function () {
     var stack = '';
     if (currentlyValidatingElement) {
       var name = getDisplayName(currentlyValidatingElement);
       var owner = currentlyValidatingElement._owner;
       stack += describeComponentFrame(name, currentlyValidatingElement._source, owner && getComponentName(owner));
     }
-    stack += ReactDebugCurrentFrame$1.getStackAddendum() || '';
+    stack += ReactDebugCurrentFrame.getStackAddendum() || '';
     return stack;
   };
 
@@ -1432,8 +1449,8 @@ var ITERATOR_SYMBOL$1 = typeof Symbol === 'function' && Symbol.iterator;
 var FAUX_ITERATOR_SYMBOL$1 = '@@iterator'; // Before Symbol spec.
 
 function getDeclarationErrorAddendum() {
-  if (ReactCurrentOwner_1.current) {
-    var name = getComponentName(ReactCurrentOwner_1.current);
+  if (ReactCurrentOwner.current) {
+    var name = getComponentName(ReactCurrentOwner.current);
     if (name) {
       return '\n\nCheck the render method of `' + name + '`.';
     }
@@ -1497,14 +1514,14 @@ function validateExplicitKey(element, parentType) {
   // property, it may be the creator of the child that's responsible for
   // assigning it a key.
   var childOwner = '';
-  if (element && element._owner && element._owner !== ReactCurrentOwner_1.current) {
+  if (element && element._owner && element._owner !== ReactCurrentOwner.current) {
     // Give the component that originally created this child.
     childOwner = ' It was passed a child from ' + getComponentName(element._owner) + '.';
   }
 
   currentlyValidatingElement = element;
   {
-    warning$4(false, 'Each child in an array or iterator should have a unique "key" prop.' + '%s%s See https://fb.me/react-warning-keys for more information.%s', currentComponentErrorInfo, childOwner, getStackAddendum$1());
+    warning_1$1(false, 'Each child in an array or iterator should have a unique "key" prop.' + '%s%s See https://fb.me/react-warning-keys for more information.%s', currentComponentErrorInfo, childOwner, getStackAddendum());
   }
   currentlyValidatingElement = null;
 }
@@ -1525,11 +1542,11 @@ function validateChildKeys(node, parentType) {
   if (Array.isArray(node)) {
     for (var i = 0; i < node.length; i++) {
       var child = node[i];
-      if (ReactElement_1.isValidElement(child)) {
+      if (isValidElement(child)) {
         validateExplicitKey(child, parentType);
       }
     }
-  } else if (ReactElement_1.isValidElement(node)) {
+  } else if (isValidElement(node)) {
     // This element was passed in a valid location.
     if (node._store) {
       node._store.validated = true;
@@ -1543,7 +1560,7 @@ function validateChildKeys(node, parentType) {
         var iterator = iteratorFn.call(node);
         var step;
         while (!(step = iterator.next()).done) {
-          if (ReactElement_1.isValidElement(step.value)) {
+          if (isValidElement(step.value)) {
             validateExplicitKey(step.value, parentType);
           }
         }
@@ -1568,11 +1585,11 @@ function validatePropTypes(element) {
 
   if (propTypes) {
     currentlyValidatingElement = element;
-    checkPropTypes(propTypes, element.props, 'prop', name, getStackAddendum$1);
+    checkPropTypes_1$1(propTypes, element.props, 'prop', name, getStackAddendum);
     currentlyValidatingElement = null;
   }
   if (typeof componentClass.getDefaultProps === 'function') {
-    warning$4(componentClass.getDefaultProps.isReactClassApproved, 'getDefaultProps is only used on classic React.createClass ' + 'definitions. Use a static property named `defaultProps` instead.');
+    warning_1$1(componentClass.getDefaultProps.isReactClassApproved, 'getDefaultProps is only used on classic React.createClass ' + 'definitions. Use a static property named `defaultProps` instead.');
   }
 }
 
@@ -1592,7 +1609,7 @@ function validateFragmentProps(fragment) {
       var key = _step.value;
 
       if (!VALID_FRAGMENT_PROPS.has(key)) {
-        warning$4(false, 'Invalid prop `%s` supplied to `React.Fragment`. ' + 'React.Fragment can only have `key` and `children` props.%s', key, getStackAddendum$1());
+        warning_1$1(false, 'Invalid prop `%s` supplied to `React.Fragment`. ' + 'React.Fragment can only have `key` and `children` props.%s', key, getStackAddendum());
         break;
       }
     }
@@ -1612,155 +1629,167 @@ function validateFragmentProps(fragment) {
   }
 
   if (fragment.ref !== null) {
-    warning$4(false, 'Invalid attribute `ref` supplied to `React.Fragment`.%s', getStackAddendum$1());
+    warning_1$1(false, 'Invalid attribute `ref` supplied to `React.Fragment`.%s', getStackAddendum());
   }
 
   currentlyValidatingElement = null;
 }
 
-var ReactElementValidator$1 = {
-  createElement: function (type, props, children) {
-    var validType = typeof type === 'string' || typeof type === 'function' || typeof type === 'symbol' || typeof type === 'number';
-    // We warn in this case but don't throw. We expect the element creation to
-    // succeed and there will likely be errors in render.
-    if (!validType) {
-      var info = '';
-      if (type === undefined || typeof type === 'object' && type !== null && Object.keys(type).length === 0) {
-        info += ' You likely forgot to export your component from the file ' + "it's defined in.";
-      }
-
-      var sourceInfo = getSourceInfoErrorAddendum(props);
-      if (sourceInfo) {
-        info += sourceInfo;
-      } else {
-        info += getDeclarationErrorAddendum();
-      }
-
-      info += ReactDebugCurrentFrame$1.getStackAddendum() || '';
-
-      warning$4(false, 'React.createElement: type is invalid -- expected a string (for ' + 'built-in components) or a class/function (for composite ' + 'components) but got: %s.%s', type == null ? type : typeof type, info);
+function createElementWithValidation(type, props, children) {
+  var validType = typeof type === 'string' || typeof type === 'function' || typeof type === 'symbol' || typeof type === 'number';
+  // We warn in this case but don't throw. We expect the element creation to
+  // succeed and there will likely be errors in render.
+  if (!validType) {
+    var info = '';
+    if (type === undefined || typeof type === 'object' && type !== null && Object.keys(type).length === 0) {
+      info += ' You likely forgot to export your component from the file ' + "it's defined in.";
     }
 
-    var element = ReactElement_1.createElement.apply(this, arguments);
-
-    // The result can be nullish if a mock or a custom function is used.
-    // TODO: Drop this when these are no longer allowed as the type argument.
-    if (element == null) {
-      return element;
-    }
-
-    // Skip key warning if the type isn't valid since our key validation logic
-    // doesn't expect a non-string/function type and can throw confusing errors.
-    // We don't want exception behavior to differ between dev and prod.
-    // (Rendering will throw with a helpful message and as soon as the type is
-    // fixed, the key warnings will appear.)
-    if (validType) {
-      for (var i = 2; i < arguments.length; i++) {
-        validateChildKeys(arguments[i], type);
-      }
-    }
-
-    if (typeof type === 'symbol' && type === REACT_FRAGMENT_TYPE$1) {
-      validateFragmentProps(element);
+    var sourceInfo = getSourceInfoErrorAddendum(props);
+    if (sourceInfo) {
+      info += sourceInfo;
     } else {
-      validatePropTypes(element);
+      info += getDeclarationErrorAddendum();
     }
 
-    return element;
-  },
+    info += getStackAddendum() || '';
 
-  createFactory: function (type) {
-    var validatedFactory = ReactElementValidator$1.createElement.bind(null, type);
-    // Legacy hook TODO: Warn if this is accessed
-    validatedFactory.type = type;
-
-    {
-      Object.defineProperty(validatedFactory, 'type', {
-        enumerable: false,
-        get: function () {
-          lowPriorityWarning$1(false, 'Factory.type is deprecated. Access the class directly ' + 'before passing it to createFactory.');
-          Object.defineProperty(this, 'type', {
-            value: type
-          });
-          return type;
-        }
-      });
-    }
-
-    return validatedFactory;
-  },
-
-  cloneElement: function (element, props, children) {
-    var newElement = ReactElement_1.cloneElement.apply(this, arguments);
-    for (var i = 2; i < arguments.length; i++) {
-      validateChildKeys(arguments[i], newElement.type);
-    }
-    validatePropTypes(newElement);
-    return newElement;
+    warning_1$1(false, 'React.createElement: type is invalid -- expected a string (for ' + 'built-in components) or a class/function (for composite ' + 'components) but got: %s.%s', type == null ? type : typeof type, info);
   }
-};
 
-var ReactElementValidator_1 = ReactElementValidator$1;
+  var element = createElement.apply(this, arguments);
 
-var createElement = ReactElement_1.createElement;
-var createFactory = ReactElement_1.createFactory;
-var cloneElement = ReactElement_1.cloneElement;
+  // The result can be nullish if a mock or a custom function is used.
+  // TODO: Drop this when these are no longer allowed as the type argument.
+  if (element == null) {
+    return element;
+  }
 
-{
-  var ReactElementValidator = ReactElementValidator_1;
-  createElement = ReactElementValidator.createElement;
-  createFactory = ReactElementValidator.createFactory;
-  cloneElement = ReactElementValidator.cloneElement;
+  // Skip key warning if the type isn't valid since our key validation logic
+  // doesn't expect a non-string/function type and can throw confusing errors.
+  // We don't want exception behavior to differ between dev and prod.
+  // (Rendering will throw with a helpful message and as soon as the type is
+  // fixed, the key warnings will appear.)
+  if (validType) {
+    for (var i = 2; i < arguments.length; i++) {
+      validateChildKeys(arguments[i], type);
+    }
+  }
+
+  if (typeof type === 'symbol' && type === REACT_FRAGMENT_TYPE$1) {
+    validateFragmentProps(element);
+  } else {
+    validatePropTypes(element);
+  }
+
+  return element;
 }
+
+function createFactoryWithValidation(type) {
+  var validatedFactory = createElementWithValidation.bind(null, type);
+  // Legacy hook TODO: Warn if this is accessed
+  validatedFactory.type = type;
+
+  {
+    Object.defineProperty(validatedFactory, 'type', {
+      enumerable: false,
+      get: function () {
+        lowPriorityWarning$1(false, 'Factory.type is deprecated. Access the class directly ' + 'before passing it to createFactory.');
+        Object.defineProperty(this, 'type', {
+          value: type
+        });
+        return type;
+      }
+    });
+  }
+
+  return validatedFactory;
+}
+
+function cloneElementWithValidation(element, props, children) {
+  var newElement = cloneElement.apply(this, arguments);
+  for (var i = 2; i < arguments.length; i++) {
+    validateChildKeys(arguments[i], newElement.type);
+  }
+  validatePropTypes(newElement);
+  return newElement;
+}
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
 var REACT_FRAGMENT_TYPE = typeof Symbol === 'function' && Symbol['for'] && Symbol['for']('react.fragment') || 0xeacb;
 
 var React = {
   Children: {
-    map: ReactChildren_1.map,
-    forEach: ReactChildren_1.forEach,
-    count: ReactChildren_1.count,
-    toArray: ReactChildren_1.toArray,
-    only: onlyChild_1
+    map: mapChildren,
+    forEach: forEachChildren,
+    count: countChildren,
+    toArray: toArray,
+    only: onlyChild
   },
 
-  Component: ReactBaseClasses.Component,
-  PureComponent: ReactBaseClasses.PureComponent,
-  unstable_AsyncComponent: ReactBaseClasses.AsyncComponent,
+  Component: Component,
+  PureComponent: PureComponent,
+  unstable_AsyncComponent: AsyncComponent,
 
-  createElement: createElement,
-  cloneElement: cloneElement,
-  isValidElement: ReactElement_1.isValidElement,
-
-  createFactory: createFactory,
+  createElement: createElementWithValidation,
+  cloneElement: cloneElementWithValidation,
+  createFactory: createFactoryWithValidation,
+  isValidElement: isValidElement,
 
   version: ReactVersion,
 
   __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: {
-    ReactCurrentOwner: ReactCurrentOwner_1,
+    ReactCurrentOwner: ReactCurrentOwner,
     // Used by renderers to avoid bundling object-assign twice in UMD bundles:
-    assign: index$2
+    assign: objectAssign$1
   }
 };
 
-if (ReactFeatureFlags_1.enableReactFragment) {
+if (ReactFeatureFlags.enableReactFragment) {
   React.Fragment = REACT_FRAGMENT_TYPE;
 }
 
 {
-  index$2(React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED, {
+  objectAssign$1(React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED, {
     // These should not be included in production.
-    ReactDebugCurrentFrame: ReactDebugCurrentFrame_1,
+    ReactDebugCurrentFrame: ReactDebugCurrentFrame,
     // Shim for React DOM 16.0.0 which still destructured (but not used) this.
     // TODO: remove in React 17.0.
     ReactComponentTreeHook: {}
   });
 }
 
-var React_1 = React;
 
-var index = React_1;
 
-return index;
+var React$2 = Object.freeze({
+	default: React
+});
+
+var React$3 = ( React$2 && React ) || React$2;
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * 
+ */
+
+
+
+
+
+// TODO: decide on the top-level export form.
+// This is hacky but makes it work with both Rollup and Jest.
+var react = React$3['default'] ? React$3['default'] : React$3;
+
+return react;
 
 })));
