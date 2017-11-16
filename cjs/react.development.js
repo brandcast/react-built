@@ -1,4 +1,4 @@
-/** @license React v16.1.0-beta
+/** @license React v16.1.1
  * react.development.js
  *
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -6,70 +6,23 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+
 'use strict';
 
-
 if (process.env.NODE_ENV !== "production") {
-(function() {
-
+  (function() {
 'use strict';
 
 var _assign = require('object-assign');
-var emptyObject = require('fbjs/lib/emptyObject');
 var invariant = require('fbjs/lib/invariant');
+var emptyObject = require('fbjs/lib/emptyObject');
 var warning = require('fbjs/lib/warning');
 var emptyFunction = require('fbjs/lib/emptyFunction');
 var checkPropTypes = require('prop-types/checkPropTypes');
 
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-
-
 // TODO: this is special because it gets imported during build.
 
-var ReactVersion = '16.1.0-beta';
-
-var ReactFeatureFlags = {
-  enableAsyncSubtreeAPI: true,
-  enableAsyncSchedulingByDefaultInReactDOM: false,
-  // Mutating mode (React DOM, React ART, React Native):
-  enableMutatingReconciler: true,
-  // Experimental noop mode (currently unused):
-  enableNoopReconciler: false,
-  // Experimental persistent mode (CS):
-  enablePersistentReconciler: false,
-  // Exports React.Fragment
-  enableReactFragment: false,
-  // Exports ReactDOM.createRoot
-  enableCreateRoot: false
-}; /**
-    * Copyright (c) 2013-present, Facebook, Inc.
-    *
-    * This source code is licensed under the MIT license found in the
-    * LICENSE file in the root directory of this source tree.
-    *
-    * 
-    */
-
-{
-  if (Object.freeze) {
-    Object.freeze(ReactFeatureFlags);
-  }
-}
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * 
- */
+var ReactVersion = '16.1.1';
 
 /**
  * WARNING: DO NOT manually require this module.
@@ -78,12 +31,20 @@ var ReactFeatureFlags = {
  * It always throws.
  */
 
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
+// Exports React.Fragment
+var enableReactFragment = false;
+// Exports ReactDOM.createRoot
+
+
+
+// Mutating mode (React DOM, React ART, React Native):
+
+// Experimental noop mode (currently unused):
+
+// Experimental persistent mode (CS):
+
+
+// Only used in www builds.
 
 /**
  * Forked from fbjs/warning:
@@ -137,13 +98,6 @@ var lowPriorityWarning = function () {};
 }
 
 var lowPriorityWarning$1 = lowPriorityWarning;
-
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
 
 var didWarnStateUpdateForUnmountedComponent = {};
 
@@ -227,13 +181,6 @@ var ReactNoopUpdateQueue = {
     warnNoop(publicInstance, 'setState');
   }
 };
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
 
 /**
  * Base class helpers for the updating state of a component.
@@ -374,21 +321,7 @@ var ReactCurrentOwner = {
    * @type {ReactComponent}
    */
   current: null
-}; /**
-    * Copyright (c) 2013-present, Facebook, Inc.
-    *
-    * This source code is licensed under the MIT license found in the
-    * LICENSE file in the root directory of this source tree.
-    *
-    * 
-    */
-
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
+};
 
 var hasOwnProperty = Object.prototype.hasOwnProperty;
 
@@ -699,15 +632,6 @@ function isValidElement(object) {
   return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE$1;
 }
 
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * 
- */
-
 var ReactDebugCurrentFrame = {};
 
 {
@@ -722,13 +646,6 @@ var ReactDebugCurrentFrame = {};
     return null;
   };
 }
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
 
 var ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
 var FAUX_ITERATOR_SYMBOL = '@@iterator'; // Before Symbol spec.
@@ -1040,15 +957,6 @@ function onlyChild(children) {
   return children;
 }
 
-/**
- * Copyright (c) 2016-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * 
- */
-
 var describeComponentFrame = function (name, source, ownerName) {
   return '\n    in ' + (name || 'Unknown') + (source ? ' (at ' + source.fileName.replace(/^.*[\\\/]/, '') + ':' + source.lineNumber + ')' : ownerName ? ' (created by ' + ownerName + ')' : '');
 };
@@ -1063,21 +971,7 @@ function getComponentName(fiber) {
     return type.displayName || type.name;
   }
   return null;
-} /**
-   * Copyright (c) 2013-present, Facebook, Inc.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE file in the root directory of this source tree.
-   *
-   * 
-   */
-
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
+}
 
 /**
  * ReactElementValidator provides a wrapper around a element factory
@@ -1316,7 +1210,7 @@ function createElementWithValidation(type, props, children) {
   if (!validType) {
     var info = '';
     if (type === undefined || typeof type === 'object' && type !== null && Object.keys(type).length === 0) {
-      info += ' You likely forgot to export your component from the file ' + "it's defined in.";
+      info += ' You likely forgot to export your component from the file ' + "it's defined in, or you might have mixed up default and named imports.";
     }
 
     var sourceInfo = getSourceInfoErrorAddendum(props);
@@ -1389,13 +1283,6 @@ function cloneElementWithValidation(element, props, children) {
   return newElement;
 }
 
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
 var REACT_FRAGMENT_TYPE = typeof Symbol === 'function' && Symbol['for'] && Symbol['for']('react.fragment') || 0xeacb;
 
 var React = {
@@ -1425,7 +1312,7 @@ var React = {
   }
 };
 
-if (ReactFeatureFlags.enableReactFragment) {
+if (enableReactFragment) {
   React.Fragment = REACT_FRAGMENT_TYPE;
 }
 
@@ -1447,24 +1334,10 @@ var React$2 = Object.freeze({
 
 var React$3 = ( React$2 && React ) || React$2;
 
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * 
- */
-
-
-
-
-
 // TODO: decide on the top-level export form.
 // This is hacky but makes it work with both Rollup and Jest.
 var react = React$3['default'] ? React$3['default'] : React$3;
 
 module.exports = react;
-
-})();
+  })();
 }
