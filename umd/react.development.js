@@ -184,6 +184,9 @@ var enableReactFragment = false;
 // Experimental persistent mode (CS):
 
 
+// Helps identify side effects in begin-phase lifecycle hooks and setState reducers:
+
+
 // Only used in www builds.
 
 /**
